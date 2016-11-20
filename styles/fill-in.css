@@ -1,0 +1,18 @@
+.h5p-user-response,
+.h5p-correct-responses-pattern {
+  margin: 0 0.5em;
+  padding: 0.2em;
+  border: 1px solid;
+}
+
+.h5p-correct-responses-pattern {
+  background: lightblue;
+}
+
+.h5p-user-response-correct {
+  background: lightgreen;
+}
+
+.h5p-user-response-wrong {
+  background: lightcoral;
+}
