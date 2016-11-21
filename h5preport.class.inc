@@ -9,7 +9,8 @@ class H5PReport {
   private static $processorMap = array(
     'fill-in' => 'FillInProcessor',
     'true-false' => 'TrueFalseProcessor',
-    'matching' => 'MatchingProcessor'
+    'matching' => 'MatchingProcessor',
+    'choice' => 'ChoiceProcessor'
   );
 
   private $processors = array();
