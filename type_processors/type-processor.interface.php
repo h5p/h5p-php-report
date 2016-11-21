@@ -13,10 +13,42 @@ abstract class TypeProcessor {
    * @return string HTML as string
    */
   public function generateReport($xapiData) {
-    return $this->generateHTML($this->getDescription($xapiData),
-      $this->getCRP($xapiData),
-      $this->getResponse($xapiData)
+
+    // Grab description
+    $description = $this->getDescription($xapiData);
+
+    // Grab correct response pattern
+    $crp = $this->getCRP($xapiData);
+
+    // Grab extras
+    $extras = $this->getExtras($xapiData);
+
+    // No correct reponse patterns, use description
+    if (empty($crp)) {
+      return $description;
+    }
+
+    return $this->generateHTML(
+      $description,
+      $crp,
+      $this->getResponse($xapiData),
+      $extras
     );
+  }
+
+  /**
+   * Decode extras from xAPI data.
+   *
+   * @param $xapiData
+   *
+   * @return mixed
+   */
+  protected function getExtras($xapiData) {
+    if (!isset($xapiData['extras'])) {
+      return null;
+    }
+
+    return json_decode($xapiData['extras']);
   }
 
   /**
@@ -27,9 +59,7 @@ abstract class TypeProcessor {
    * @return string Description as a string
    */
   protected function getDescription($xapiData) {
-    $decoded      = json_decode($xapiData['description']);
-    $descriptions = (array) $decoded;
-    return $descriptions['en-US'];
+    return json_decode($xapiData['description']);
   }
 
   /**
@@ -62,8 +92,9 @@ abstract class TypeProcessor {
    * @param string $description Description
    * @param array $crp Correct responses pattern
    * @param string $response User given answer
+   * @param object $extras Additional data
    *
    * @return string HTML for the report
    */
-  abstract function generateHTML($description, $crp, $response);
+  abstract function generateHTML($description, $crp, $response, $extras);
 }

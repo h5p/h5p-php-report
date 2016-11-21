@@ -6,7 +6,13 @@
  */
 class H5PReport {
 
-  private $fillInProcessor;
+  private static $processorMap = array(
+    'fill-in' => 'FillInProcessor',
+    'true-false' => 'TrueFalseProcessor',
+    'matching' => 'MatchingProcessor'
+  );
+
+  private $processors = array();
 
   /**
    * Generate the proper report depending on xAPI data.
@@ -18,21 +24,16 @@ class H5PReport {
   public function generateReport($xapiData) {
     $interactionType = json_decode($xapiData['interaction_type']);
 
-    // Choose the proper processor for given interaction type
-    switch ($interactionType) {
-      case 'fill-in':
-
-        // Initialize processor
-        if (!$this->fillInProcessor) {
-          $this->fillInProcessor = new FillInProcessor();
-        }
-
-        // Return generated report
-        return $this->fillInProcessor->generateReport($xapiData);
-        break;
-
-      default:
-        return '';
+    if (!isset(self::$processorMap[$interactionType])) {
+      return ''; // No processor found
     }
+
+    if (!isset($this->processors[$interactionType])) {
+      // Not used before. Initialize new processor
+      $this->processors[$interactionType] = new self::$processorMap[$interactionType]();
+    }
+
+    // Generate and return report from xAPI data
+    return $this->processors[$interactionType]->generateReport($xapiData);
   }
 }

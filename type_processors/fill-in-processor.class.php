@@ -25,15 +25,11 @@ class FillInProcessor extends TypeProcessor {
    * @param string $description Description of interaction task
    * @param array $crp Correct responses pattern
    * @param string $response User response
+   * @param object $extras Additional data
    *
    * @return string HTML for report
    */
-  public function generateHTML($description, $crp, $response) {
-
-    // No correct answer patterns
-    if (!sizeof($crp)) {
-      return $description;
-    }
+  public function generateHTML($description, $crp, $response, $extras) {
 
     // Generate interaction options
     $caseMatters = $this->determineCaseMatters($crp[0]);
@@ -159,6 +155,8 @@ class FillInProcessor extends TypeProcessor {
    * @param array $crp Correct responses patterns
    * @param array $response User responses
    * @param boolean $caseSensitive Case sensitivity of interaction
+   *
+   * @return array Placeholder replacements
    */
   private function getPlaceholderReplacements($crp, $response, $caseSensitive) {
     $placeholderReplacements = array();
@@ -183,6 +181,8 @@ class FillInProcessor extends TypeProcessor {
         $response[$index] .
         '</span>';
     }
+
+    return $placeholderReplacements;
   }
 
   /**
