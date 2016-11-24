@@ -11,7 +11,8 @@ class H5PReport {
     'fill-in' => 'FillInProcessor',
     'true-false' => 'TrueFalseProcessor',
     'matching' => 'MatchingProcessor',
-    'choice' => 'ChoiceProcessor'
+    'choice' => 'ChoiceProcessor',
+    'long-choice' => 'LongChoiceProcessor'
   );
 
   private $processors = array();

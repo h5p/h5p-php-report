@@ -29,8 +29,9 @@ class LongChoiceProcessor extends TypeProcessor {
 
     return
       '<div class="h5p-long-choice-container">' .
-        $descriptionHTML . $bodyHTML . $footer .
-      '</div>';
+        $descriptionHTML . $bodyHTML .
+      '</div>' .
+      $footer;
   }
 
   private function generateDescription($description) {
@@ -41,7 +42,7 @@ class LongChoiceProcessor extends TypeProcessor {
 
     $choices = $extras->choices;
 
-    $choicesHTML = '';
+    $choicesHTML = array();
     foreach($choices as $choice) {
       $choiceID = $choice->id;
       $isCRP = in_array($choiceID, $correctAnswers);
@@ -55,13 +56,16 @@ class LongChoiceProcessor extends TypeProcessor {
         $classes .= ' h5p-long-choice-correct';
       }
 
-      $choicesHTML .=
+      $choicesHTML[] =
         '<span class="' . $classes . '">' .
           $choice->description->{'en-US'} .
         '</span>';
     }
 
-    return '<div class="h5p-long-choice-words">' . $choicesHTML . '</div>';
+    return
+      '<div class="h5p-long-choice-words">' .
+        join(' ', $choicesHTML) .
+      '</div>';
 
   }
 

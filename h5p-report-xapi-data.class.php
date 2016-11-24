@@ -186,6 +186,7 @@ class H5PReportXAPIData {
 
     switch ($this->getInteractionType()) {
       case 'choice':
+      case 'long-choice':
         $additionals['choices'] = $this->getObjectDefinition('choices', array());
         break;
 
