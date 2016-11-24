@@ -17,6 +17,9 @@ class CompoundProcessor extends TypeProcessor {
    * @return string HTML for report
    */
   public function generateHTML($description, $crp, $response, $extras) {
+    // We need some style for our report
+    $this->setStyle('styles/compound.css');
+
     $H5PReport = H5PReport::getInstance();
 
     $reports = '';

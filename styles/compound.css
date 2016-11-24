@@ -1,0 +1,9 @@
+.h5p-result {
+  margin: 2.5em 0;
+}
+.h5p-result:first-child {
+  margin-top: 0;
+}
+.h5p-result:last-child {
+  margin-bottom: 0;
+}
