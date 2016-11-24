@@ -38,7 +38,7 @@ class MatchingProcessor extends TypeProcessor  {
       $draggables);
 
     $mappedResponse = $this->mapPatternIDsToIndexes($response,
-      $draggables,
+      $dropzones,
       $draggables);
 
     $tableHTML = $this->generateTable($mappedCRP,
