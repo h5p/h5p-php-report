@@ -5,6 +5,8 @@
  */
 abstract class TypeProcessor {
 
+  private $style;
+
   /**
    * Generate HTML for report
    *
@@ -23,11 +25,6 @@ abstract class TypeProcessor {
     // Grab extras
     $extras = $this->getExtras($xapiData);
 
-    // No correct reponse patterns, use description
-    if (empty($crp)) {
-      return $description;
-    }
-
     return $this->generateHTML(
       $description,
       $crp,
@@ -39,51 +36,50 @@ abstract class TypeProcessor {
   /**
    * Decode extras from xAPI data.
    *
-   * @param $xapiData
+   * @param stdClass $xapiData
    *
-   * @return mixed
+   * @return stdClass
    */
   protected function getExtras($xapiData) {
-    if (!isset($xapiData['extras'])) {
-      return null;
+    $extras = ($xapiData->additionals === '' ? new stdClass() : json_decode($xapiData->additionals));
+    if (isset($xapiData->children)) {
+      $extras->children = $xapiData->children;
     }
 
-    return json_decode($xapiData['extras']);
+    return $extras;
   }
 
   /**
    * Decode and retrieve 'en-US' description from xAPI data.
    *
-   * @param $xapiData
+   * @param stdClass $xapiData
    *
    * @return string Description as a string
    */
   protected function getDescription($xapiData) {
-    return json_decode($xapiData['description']);
+    return $xapiData->description;
   }
 
   /**
    * Decode and retrieve Correct Responses Pattern from xAPI data.
    *
-   * @param $xapiData
+   * @param stdClass $xapiData
    *
    * @return array Correct responses pattern as an array
    */
   protected function getCRP($xapiData) {
-    $decoded = json_decode($xapiData['correct_responses_pattern']);
-    $crp     = (array) $decoded;
-    return $crp;
+    return json_decode($xapiData->correct_responses_pattern, TRUE);
   }
 
   /**
    * Decode and retrieve user response from xAPI data.
    *
-   * @param $xapiData
+   * @param stdClass$xapiData
    *
    * @return string User response
    */
   protected function getResponse($xapiData) {
-    return json_decode($xapiData['response']);
+    return $xapiData->response;
   }
 
   /**
@@ -97,4 +93,20 @@ abstract class TypeProcessor {
    * @return string HTML for the report
    */
   abstract function generateHTML($description, $crp, $response, $extras);
+
+  /**
+   * Set style used by the processor.
+   */
+  protected function setStyle($style) {
+    $this->style = $style;
+  }
+
+  /**
+   * Get style used by processor if used.
+   *
+   * @return string Library relative path to CSS
+   */
+  public function getStyle() {
+    return $this->style;
+  }
 }

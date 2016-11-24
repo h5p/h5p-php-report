@@ -4,7 +4,7 @@
  * Class FillInProcessor
  * Processes and generates HTML report for 'fill-in' interaction type.
  */
-class TrueFalseProcessor extends TypeProcessor {
+class CompoundProcessor extends TypeProcessor {
 
   /**
    * Determines options for interaction and generates a human readable HTML
@@ -16,7 +16,16 @@ class TrueFalseProcessor extends TypeProcessor {
    *
    * @return string HTML for report
    */
-  public function generateHTML($description, $crp, $response) {
-    return "Correct Answer: {$crp[0]}<br/>User Answer: {$response}";
+  public function generateHTML($description, $crp, $response, $extras) {
+    $H5PReport = H5PReport::getInstance();
+
+    $reports = '';
+    if (isset($extras->children)) {
+      foreach ($extras->children as $childData) {
+        $reports .= '<div class="h5p-result">' . $H5PReport->generateReport($childData) . '</div>';
+      }
+    }
+
+    return $reports;
   }
 }

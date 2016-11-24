@@ -19,6 +19,12 @@ class FillInProcessor extends TypeProcessor {
   const RESPONSES_SEPARATOR = '[,]';
 
   /**
+   * String separator that will be applied between correct responses pattern
+   * words
+   */
+  const CRP_REPORT_SEPARATOR = ' / ';
+
+  /**
    * Determines options for interaction and generates a human readable HTML
    * report.
    *
@@ -30,10 +36,12 @@ class FillInProcessor extends TypeProcessor {
    * @return string HTML for report
    */
   public function generateHTML($description, $crp, $response, $extras) {
+    // We need some style for our report
+    $this->setStyle('styles/fill-in.css');
 
     // Generate interaction options
     $caseMatters = $this->determineCaseMatters($crp[0]);
-    $options     = '<p class="options">' . $caseMatters['html'] . '</p>';
+    $options     = (empty($caseMatters['html']) ? '' : '<p class="h5p-fill-in-options">' . $caseMatters['html'] . '</p>');
 
     // Process correct responses and user responses patterns
     $processedCRPs     = $this->processCRPs($crp, $caseMatters['nextIndex']);
@@ -46,7 +54,26 @@ class FillInProcessor extends TypeProcessor {
       $caseMatters['caseSensitive']
     );
 
-    return $options . $report;
+    $container = '<div class="h5p-fill-in-container">' . $options . $report .
+                 '</div>';
+    $footer = $this->generateFooter();
+
+
+    return $container . $footer;
+  }
+
+  /**
+   * Generate footer
+   *
+   * @return string
+   */
+  function generateFooter() {
+    return
+      '<div class="h5p-fill-in-footer">' .
+      '<span class="h5p-fill-in-correct-responses-pattern">Correct Answer</span>' .
+      '<span class="h5p-fill-in-user-response-correct">Your correct answer</span>' .
+      '<span class="h5p-fill-in-user-response-wrong">Your incorrect answer</span>' .
+      '</div>';
   }
 
   /**
@@ -105,12 +132,12 @@ class FillInProcessor extends TypeProcessor {
     // Check if interaction has case sensitivity option as first option
     if (strtolower(substr($singleCRP, 1, 13)) === 'case_matters=') {
       if (strtolower(substr($singleCRP, 14, 5)) === 'false') {
-        $html          = 'Case insensitive';
+        $html          = 'caseSensitive = false';
         $nextIndex     = 20;
         $caseSensitive = FALSE;
       }
       else if (strtolower(substr($singleCRP, 14, 4)) === 'true') {
-        $html          = 'Case sensitive';
+        $html          = 'caseSensitive = true';
         $nextIndex     = 19;
         $caseSensitive = TRUE;
       }
@@ -169,17 +196,26 @@ class FillInProcessor extends TypeProcessor {
         $caseSensitive
       );
       $responseClass = $isCorrect ?
-        'h5p-user-response-correct' :
-        'h5p-user-response-wrong';
+        'h5p-fill-in-user-response-correct' :
+        'h5p-fill-in-user-response-wrong';
 
       // Format the placeholder replacements
-      $placeholderReplacements[] =
-        '<span class="h5p-correct-responses-pattern">' .
-        $this->getCRPHtml($value) .
-        '</span>' .
-        '<span class="h5p-user-response ' . $responseClass . '">' .
+      $userResponse =
+        '<span class="h5p-fill-in-user-response ' . $responseClass . '">' .
         $response[$index] .
         '</span>';
+
+      $CRPhtml = $this->getCRPHtml($value, $response[$index], $caseSensitive);
+
+      $correctResponsePattern = '';
+      if (strlen($CRPhtml) > 0) {
+        $correctResponsePattern .=
+          '<span class="h5p-fill-in-correct-responses-pattern">' .
+            $CRPhtml .
+          '</span>';
+      }
+
+      $placeholderReplacements[] = $userResponse . $correctResponsePattern;
     }
 
     return $placeholderReplacements;
@@ -188,19 +224,35 @@ class FillInProcessor extends TypeProcessor {
   /**
    * Generate HTML from a single correct response pattern
    *
-   * @param $singleCRP
+   * @param array $singleCRP
+   * @param string $response User response
+   * @param boolean $caseSensitive
    *
    * @return string
    */
-  private function getCRPHtml($singleCRP) {
+  private function getCRPHtml($singleCRP, $response, $caseSensitive) {
     $html = '';
 
     foreach ($singleCRP as $index => $value) {
+
+      // Compare lower cases if not case sensitive
+      $comparisonCRP = $value;
+      $comparisonResponse = $response;
+      if (isset($caseSensitive) && $caseSensitive === false) {
+        $comparisonCRP = strtolower($value);
+        $comparisonResponse = strtolower($response);
+      }
+
+      // Skip showing answers that user gave
+      if ($comparisonCRP === $comparisonResponse) {
+        continue;
+      }
+
       $html .= $value;
 
       // Add separator between responses
       if ($index < sizeof($singleCRP) - 1) {
-        $html .= self::RESPONSES_SEPARATOR;
+        $html .= self::CRP_REPORT_SEPARATOR;
       }
     }
 
