@@ -22,7 +22,8 @@ class CompoundProcessor extends TypeProcessor {
 
     $H5PReport = H5PReport::getInstance();
 
-    $reports = '';
+    $reports = (!empty($description) ? '<p class="h5p-compound-task-description">' . $description . '</p>' : '');
+
     if (isset($extras->children)) {
       foreach ($extras->children as $childData) {
         $reports .= '<div class="h5p-result">' . $H5PReport->generateReport($childData) . '</div>';
