@@ -45,10 +45,8 @@ getXAPIData = function () {
 ### Statement
 
 The statement object is a standard xAPI statement, which should adhere to the
- [xAPI specification](https://github
- .com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#table-of-contents). You can 
- see an example for how this looks for [True False question](https://h5p
- .org/true-false) in [Appendix A](#appendix-a).
+ [xAPI specification](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#table-of-contents). You can 
+ see an example for how this looks for [True False question](https://h5p.org/true-false) in [Appendix A](#appendix-a).
  
 
 ### Children
@@ -61,8 +59,7 @@ A complete example of [Single Choice Set](https://h5p.org/single-choice-set) can
 
 ## Appendix A
 
-An example of an xAPI statement from [True False question](https://h5p
-                                                            .org/true-false).
+An example of an xAPI statement from [True False question](https://h5p.org/true-false).
 
 ```json
 {  
@@ -124,9 +121,7 @@ An example of an xAPI statement from [True False question](https://h5p
 
 ## Appendix B
 
-An example of a complete ```getXAPIData``` call to [Single Choice Set]
-(https://h5p
-.org/single-choice-set).
+An example of a complete ```getXAPIData``` call to [Single Choice Set](https://h5p.org/single-choice-set).
 
 ```json
 {  
