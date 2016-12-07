@@ -21,7 +21,7 @@ class LongChoiceProcessor extends TypeProcessor {
     $this->setStyle('styles/long-choice.css');
 
     $correctAnswers = explode('[,]', $crp[0]);
-    $responses = explode('[,]', $response);
+    $responses = !empty($response) ? explode('[,]', $response) : array();
 
     $descriptionHTML = $this->generateDescription($description);
     $bodyHTML = $this->generateBody($extras, $correctAnswers, $responses);
@@ -34,16 +34,38 @@ class LongChoiceProcessor extends TypeProcessor {
       $footer;
   }
 
+  /**
+   * Generates description element
+   *
+   * @param string $description
+   *
+   * @return string Description element
+   */
   private function generateDescription($description) {
-    return'<p class="h5p-long-choice-task-description">' . $description . '</p>';
+    return'<div class="h5p-long-choice-task-description">' . $description . '</div>';
   }
 
+  /**
+   * Generates report body from words
+   *
+   * @param object $extras Additional information used to render report
+   * @param array $correctAnswers
+   * @param array $responses
+   *
+   * @return string Body element as a string
+   */
   private function generateBody($extras, $correctAnswers, $responses) {
-
     $choices = $extras->choices;
 
+    $extensions = isset($extras->extensions) ? $extras->extensions : (object) array();
+
+    // Determine if line-breaks extension exists
+    $lineBreaks = isset($extensions->{'https://h5p.org/x-api/line-breaks'}) ?
+      $extensions->{'https://h5p.org/x-api/line-breaks'} : array();
+    $lineBreakIndex = 0;
+
     $choicesHTML = array();
-    foreach($choices as $choice) {
+    foreach($choices as $index => $choice) {
       $choiceID = $choice->id;
       $isCRP = in_array($choiceID, $correctAnswers);
       $isAnswered = in_array($choiceID, $responses);
@@ -56,19 +78,24 @@ class LongChoiceProcessor extends TypeProcessor {
         $classes .= ' h5p-long-choice-correct';
       }
 
+      // Add choices html
       $choicesHTML[] =
         '<span class="' . $classes . '">' .
           $choice->description->{'en-US'} .
         '</span>';
+
+      // Add line break if extension found
+      if (isset($lineBreaks[$lineBreakIndex]) && $lineBreaks[$lineBreakIndex] === $index) {
+        $choicesHTML[] = '</br>';
+        $lineBreakIndex++;
+      }
     }
 
     return
       '<div class="h5p-long-choice-words">' .
         join(' ', $choicesHTML) .
       '</div>';
-
   }
-
 
   /**
    * Generate footer

@@ -17,6 +17,10 @@ class ChoiceProcessor extends TypeProcessor {
    * @return string HTML for report
    */
   public function generateHTML($description, $crp, $response, $extras = NULL) {
+    if ($this->isLongChoice($extras)) {
+      return H5PReport::getInstance()->generateReport($this->xapiData, 'long-choice');
+    }
+
     // We need some style for our report
     $this->setStyle('styles/choice.css');
 
@@ -32,10 +36,26 @@ class ChoiceProcessor extends TypeProcessor {
       '</div>';
   }
 
+  /**
+   * Generate description element
+   *
+   * @param string $description
+   *
+   * @return string Description element as a string
+   */
   private function generateDescription($description) {
     return'<p class="h5p-choices-task-description">' . $description . '</p>';
   }
 
+  /**
+   * Generate HTML table of choices
+   *
+   * @param object $extras
+   * @param array $correctAnswers
+   * @param array $responses
+   *
+   * @return string Table element
+   */
   private function generateTable($extras, $correctAnswers, $responses) {
 
     $choices = $extras->choices;
@@ -76,6 +96,19 @@ class ChoiceProcessor extends TypeProcessor {
 
     $tableContent = '<tbody>' . $tableHeader . $rows . '</tbody>';
     return '<table class="h5p-choices-table">' . $tableContent . '</table>';
+  }
 
+  /**
+   * Determine if choice is a long choice interaction type
+   *
+   * @param $extras
+   *
+   * @return bool
+   */
+  private function isLongChoice($extras) {
+    $extensions = isset($extras->extensions) ? $extras->extensions : (object) array();
+
+    // Determine if line-breaks extension exists
+    return isset($extensions->{'https://h5p.org/x-api/line-breaks'});
   }
 }

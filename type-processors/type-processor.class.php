@@ -7,6 +7,8 @@ abstract class TypeProcessor {
 
   private $style;
 
+  protected $xapiData;
+
   /**
    * Generate HTML for report
    *
@@ -15,6 +17,7 @@ abstract class TypeProcessor {
    * @return string HTML as string
    */
   public function generateReport($xapiData) {
+    $this->xapiData = $xapiData;
 
     // Grab description
     $description = $this->getDescription($xapiData);

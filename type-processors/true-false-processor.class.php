@@ -23,6 +23,15 @@ class TrueFalseProcessor extends TypeProcessor {
     return $this->getContent($description, $crp, $response) . $this->generateFooter();
   }
 
+  /**
+   * Get report content
+   *
+   * @param string $description
+   * @param array $crp
+   * @param string $response
+   *
+   * @return string
+   */
   private function getContent($description, $crp, $response) {
     $isCorrectClass = $response === $crp[0] ?
       'h5p-true-false-user-response-correct' :

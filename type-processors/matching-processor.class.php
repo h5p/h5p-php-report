@@ -41,6 +41,10 @@ class MatchingProcessor extends TypeProcessor  {
       $dropzones,
       $draggables);
 
+    if (empty($mappedCRP) && empty($mappedResponse)) {
+      return '';
+    }
+
     $tableHTML = $this->generateTable($mappedCRP,
       $mappedResponse,
       $dropzones,
@@ -51,8 +55,22 @@ class MatchingProcessor extends TypeProcessor  {
     return $container;
   }
 
+  /**
+   * Create a map that links IDs from pattern to indexes in the droppable and
+   * draggable arrays.
+   *
+   * @param string $pattern
+   * @param array $dropzoneIds
+   * @param array $draggableIds
+   *
+   * @return array Pattern mapped to indexes instead of IDs
+   */
   function mapPatternIDsToIndexes($pattern, $dropzoneIds, $draggableIds) {
     $mappedMatches = array();
+    if (empty($pattern)) {
+      return $mappedMatches;
+    }
+
     $singlePatterns = explode(self::EXPRESSION_SEPARATOR, $pattern);
     foreach($singlePatterns as $singlePattern) {
       $matches = explode(self::MATCH_SEPARATOR, $singlePattern);
@@ -71,17 +89,29 @@ class MatchingProcessor extends TypeProcessor  {
     return $mappedMatches;
   }
 
+  /**
+   * Find id of an item with a given index inside given array
+   *
+   * @param array $haystack
+   * @param number $id
+   *
+   * @return number Id of mapped item
+   */
   function findIndexOfItemWithId($haystack, $id) {
-    $index = null;
-    foreach($haystack as $key => $value) {
-      if ($value->id == $id) {
-        $index = $key;
-        break;
-      }
-    }
-    return $index;
+    return (isset($haystack[$id]) ? $haystack[$id]->id : NULL);
   }
 
+  /**
+   * Generate table from user response, correct response pattern, dropzones and
+   * draggables
+   *
+   * @param array $mappedCRP
+   * @param array $mappedResponse
+   * @param array $dropzones
+   * @param array $draggables
+   *
+   * @return string Table element
+   */
   function generateTable($mappedCRP, $mappedResponse, $dropzones, $draggables) {
     $header = $this->generateTableHeader();
     $rows = $this->generateRows($mappedCRP, $mappedResponse, $dropzones,
@@ -90,6 +120,16 @@ class MatchingProcessor extends TypeProcessor  {
     return '<table class="h5p-matching-table">' . $header . $rows . '</table>';
   }
 
+  /**
+   * Generate rows of table
+   *
+   * @param array $mappedCRP
+   * @param array $mappedResponse
+   * @param array $dropzones
+   * @param array $draggables
+   *
+   * @return string HTML for generated table rows
+   */
   function generateRows($mappedCRP, $mappedResponse, $dropzones, $draggables) {
     $html = '';
     foreach($dropzones as $index => $value) {
@@ -102,6 +142,17 @@ class MatchingProcessor extends TypeProcessor  {
     return $html;
   }
 
+  /**
+   * Generate row for a single dropzone and populate it with correct answers and
+   * user answers
+   *
+   * @param object $dropzone
+   * @param array $draggables
+   * @param array $crp
+   * @param array $response
+   *
+   * @return string Drop zone rows element
+   */
   function generateDropzoneRows($dropzone, $draggables, $crp, $response) {
     $dzRows = sizeof($crp) > sizeof($response) ? sizeof($crp) : sizeof($response);
 
@@ -118,7 +169,7 @@ class MatchingProcessor extends TypeProcessor  {
       $tdClass = $i >= $dzRows - 1 ? $lastCellInRow : '';
 
       if ($i === 0) {
-        // Add dropzone
+        // Add drop zone
         $row .=
           '<th
             class="' . 'h5p-matching-dropzone ' . $lastCellInRow . '"
@@ -141,7 +192,12 @@ class MatchingProcessor extends TypeProcessor  {
       if (isset($response[$i])) {
         $isCorrectClass = isset($crp[$i]) && in_array($response[$i], $crp) ?
           'h5p-matching-draggable-correct' : 'h5p-matching-draggable-wrong';
-        $responseCellContent = $draggables[$response[$i]]->value;
+        foreach ($draggables as $draggable) {
+          if ($draggable->id === $response[$i]) {
+            $responseCellContent = $draggable->value;
+            break;
+          }
+        }
       }
 
       $classes = $tdClass . (sizeof($isCorrectClass) ? ' ' : '') . $isCorrectClass;
@@ -151,10 +207,14 @@ class MatchingProcessor extends TypeProcessor  {
 
       $rows .= '<tr>' . $row . '</tr>';
     }
-
     return $rows;
   }
 
+  /**
+   * Generate table header
+   *
+   * @return string Table header element as a string
+   */
   function generateTableHeader() {
     // Empty first item
     $html = '<th class="h5p-matching-header-dropzone">Dropzone</th>' .
@@ -164,6 +224,13 @@ class MatchingProcessor extends TypeProcessor  {
     return '<tr class="h5p-matching-table-heading">' . $html . '</tr>';
   }
 
+  /**
+   * Extract drop zones from extras parameters
+   *
+   * @param object $extras
+   *
+   * @return array Drop zones
+   */
   function getDropzones($extras) {
     $dropzones = array();
 
@@ -177,6 +244,13 @@ class MatchingProcessor extends TypeProcessor  {
     return $dropzones;
   }
 
+  /**
+   * Extract draggables from extras parameters
+   *
+   * @param object $extras
+   *
+   * @return array Draggables
+   */
   function getDraggables($extras) {
     $draggables = array();
 

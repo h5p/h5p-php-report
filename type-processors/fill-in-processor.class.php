@@ -41,7 +41,6 @@ class FillInProcessor extends TypeProcessor {
 
     // Generate interaction options
     $caseMatters = $this->determineCaseMatters($crp[0]);
-    $options     = (empty($caseMatters['html']) ? '' : '<p class="h5p-fill-in-options">' . $caseMatters['html'] . '</p>');
 
     // Process correct responses and user responses patterns
     $processedCRPs     = $this->processCRPs($crp, $caseMatters['nextIndex']);
@@ -54,7 +53,7 @@ class FillInProcessor extends TypeProcessor {
       $caseMatters['caseSensitive']
     );
 
-    $container = '<div class="h5p-fill-in-container">' . $options . $report .
+    $container = '<div class="h5p-fill-in-container">' . $report .
                  '</div>';
     $footer = $this->generateFooter();
 
@@ -190,8 +189,10 @@ class FillInProcessor extends TypeProcessor {
 
     foreach ($crp as $index => $value) {
 
+      $currentResponse = isset($response[$index]) ? $response[$index] : '';
+
       // Determine user response styling
-      $isCorrect     = $this->isResponseCorrect($response[$index],
+      $isCorrect = $this->isResponseCorrect($currentResponse,
         $value,
         $caseSensitive
       );
@@ -202,10 +203,10 @@ class FillInProcessor extends TypeProcessor {
       // Format the placeholder replacements
       $userResponse =
         '<span class="h5p-fill-in-user-response ' . $responseClass . '">' .
-        $response[$index] .
+        $currentResponse .
         '</span>';
 
-      $CRPhtml = $this->getCRPHtml($value, $response[$index], $caseSensitive);
+      $CRPhtml = $this->getCRPHtml($value, $currentResponse, $caseSensitive);
 
       $correctResponsePattern = '';
       if (strlen($CRPhtml) > 0) {
@@ -231,7 +232,7 @@ class FillInProcessor extends TypeProcessor {
    * @return string
    */
   private function getCRPHtml($singleCRP, $response, $caseSensitive) {
-    $html = '';
+    $html = array ();
 
     foreach ($singleCRP as $index => $value) {
 
@@ -248,15 +249,10 @@ class FillInProcessor extends TypeProcessor {
         continue;
       }
 
-      $html .= $value;
-
-      // Add separator between responses
-      if ($index < sizeof($singleCRP) - 1) {
-        $html .= self::CRP_REPORT_SEPARATOR;
-      }
+      $html[] = $value;
     }
 
-    return $html;
+    return join(self::CRP_REPORT_SEPARATOR, $html);
   }
 
   /**
