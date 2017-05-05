@@ -64,8 +64,8 @@ An example of an xAPI statement from [True False question](https://h5p.org/true-
 ```json
 {  
   "actor":{  
-    "name":"thomasmars",
-    "mbox":"mailto:thomasmars87@gmail.com",
+    "name":"user",
+    "mbox":"mailto:user@mail.com",
     "objectType":"Agent"
   },
   "verb":{  
@@ -127,8 +127,8 @@ An example of a complete ```getXAPIData``` call to [Single Choice Set](https://h
 {  
   "statement":{  
     "actor":{  
-      "name":"thomasmars",
-      "mbox":"mailto:thomasmars87@gmail.com",
+      "name":"user",
+      "mbox":"mailto:user@mail.com",
       "objectType":"Agent"
     },
     "verb":{  
@@ -162,8 +162,8 @@ An example of a complete ```getXAPIData``` call to [Single Choice Set](https://h
     {  
       "statement":{  
         "actor":{  
-          "name":"thomasmars",
-          "mbox":"mailto:thomasmars87@gmail.com",
+          "name":"user",
+          "mbox":"mailto:user@mail.com",
           "objectType":"Agent"
         },
         "verb":{  
@@ -235,8 +235,8 @@ An example of a complete ```getXAPIData``` call to [Single Choice Set](https://h
     {  
       "statement":{  
         "actor":{  
-          "name":"thomasmars",
-          "mbox":"mailto:thomasmars87@gmail.com",
+          "name":"user",
+          "mbox":"mailto:user@mail.com",
           "objectType":"Agent"
         },
         "verb":{  
@@ -308,8 +308,8 @@ An example of a complete ```getXAPIData``` call to [Single Choice Set](https://h
     {  
       "statement":{  
         "actor":{  
-          "name":"thomasmars",
-          "mbox":"mailto:thomasmars87@gmail.com",
+          "name":"user",
+          "mbox":"mailto:user@mail.com",
           "objectType":"Agent"
         },
         "verb":{  
