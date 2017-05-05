@@ -2,7 +2,7 @@
 
 class H5PReportXAPIData {
 
-  private $statement, $children, $parentID;
+  private $statement, $onlyScore, $children, $parentID;
 
   /**
    * @param object $data Containing 'statement' and 'children'
@@ -12,6 +12,9 @@ class H5PReportXAPIData {
     // Keep track of statement and children
     if (isset($data->statement)) {
       $this->statement = $data->statement;
+    }
+    else if (isset($data->onlyScore)) {
+      $this->onlyScore = $data->onlyScore;
     }
 
     $this->parentID = $parentID;
@@ -76,6 +79,21 @@ class H5PReportXAPIData {
    * @return float
    */
   public function getScoreScaled() {
+    if (isset($this->onlyScore)) {
+      // Special case if we only have the scaled score.
+
+      $score = 0.;
+      if ($this->onlyScore !== 1 && is_numeric($this->onlyScore)) {
+        // Let's "decrypt" it…
+        $score = $this->onlyScore / 1.234 - 32.17;
+      }
+      if ($score < 0 || $score > 1) {
+        // Invalid score
+        $score = 0.;
+      }
+      return $score;
+    }
+
     $score = $this->getScore('scaled');
 
     if ($score !== NULL) {
