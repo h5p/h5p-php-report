@@ -228,24 +228,21 @@ class H5PReportXAPIData {
    * @return bool True if valid data
    */
   public function validateData() {
-      $isValid = $this->getInteractionType() !== ''
-          && $this->getDescription() !== ''
-          && $this->getCorrectResponsesPattern() !== ''
-          && $this->getResponse() !== '';
+      $validObject = $this->getInteractionType() !== ''
+                     && $this->getDescription() !== '';
 
-      if (!$isValid) {
+      if (!$validObject) {
           return false;
       }
 
       // Validate children
       $children = $this->getChildren();
       foreach ($children as $child) {
-          $isValid = $isValid && $child->validateData();
-          if (!$isValid) {
+          if (!$child->validateData()) {
               return false;
           }
       }
 
-      return $isValid;
+      return true;
   }
 }
