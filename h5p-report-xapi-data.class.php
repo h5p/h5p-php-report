@@ -39,7 +39,7 @@ class H5PReportXAPIData {
    * @param int $parentID
    * @return array
    */
-  public function getChildren($parentID) {
+  public function getChildren($parentID=NULL) {
     $children = array();
 
     // Parse children data
@@ -222,4 +222,30 @@ class H5PReportXAPIData {
     return (empty($additionals) ? '' : json_encode($additionals));
   }
 
+  /**
+   * Checks if data is valid
+   *
+   * @return bool True if valid data
+   */
+  public function validateData() {
+      $isValid = $this->getInteractionType() !== ''
+          && $this->getDescription() !== ''
+          && $this->getCorrectResponsesPattern() !== ''
+          && $this->getResponse() !== '';
+
+      if (!$isValid) {
+          return false;
+      }
+
+      // Validate children
+      $children = $this->getChildren();
+      foreach ($children as $child) {
+          $isValid = $isValid && $child->validateData();
+          if (!$isValid) {
+              return false;
+          }
+      }
+
+      return $isValid;
+  }
 }
