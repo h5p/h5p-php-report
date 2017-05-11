@@ -228,10 +228,8 @@ class H5PReportXAPIData {
    * @return bool True if valid data
    */
   public function validateData() {
-      $validObject = $this->getInteractionType() !== ''
-                     && $this->getDescription() !== '';
 
-      if (!$validObject) {
+      if ($this->getInteractionType() === '') {
           return false;
       }
 
