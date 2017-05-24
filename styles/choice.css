@@ -56,6 +56,12 @@
   width: 10%;
 }
 
+.h5p-choices-table td.h5p-choices-user-answer,
+.h5p-choices-table td.h5p-choices-crp-answer {
+  text-align: center;
+}
+
+
 .h5p-choices-user.h5p-choices-answered {
   color: #ffffff;
   background-color: #DF465A;
