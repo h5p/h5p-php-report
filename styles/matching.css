@@ -25,6 +25,12 @@
   width: 100%;
 }
 
+.h5p-matching-task-description {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
 .h5p-matching-header-dropzone {
   width: 40%;
 }
@@ -45,6 +51,10 @@
   line-height:40px;
 }
 
+.h5p-matching-table th {
+  font-weight: normal;
+}
+
 .h5p-matching-table .h5p-matching-last-cell-in-row {
   border-bottom: solid 1px #575757;
 }
@@ -53,6 +63,16 @@
   background-color: #233448;
   color: #FFFFFF;	height:60px;
   line-height:10px;
+}
+
+.h5p-matching-table tr {
+  line-height: 2em;
+}
+
+.h5p-matching-table th,
+.h5p-matching-table td,
+.h5p-matching-table tr {
+  padding-left: 1em;
 }
 
 .h5p-matching-table tr:nth-child(even) {

@@ -10,13 +10,9 @@ class CompoundProcessor extends TypeProcessor {
    * Determines options for interaction and generates a human readable HTML
    * report.
    *
-   * @param string $description Description of interaction task
-   * @param array $crp Correct responses pattern
-   * @param string $response User response
-   *
-   * @return string HTML for report
+   * @inheritdoc
    */
-  public function generateHTML($description, $crp, $response, $extras) {
+  public function generateHTML($description, $crp, $response, $extras, $rawScore = NULL, $maxScore = NULL, $scoreScaled = NULL) {
     // We need some style for our report
     $this->setStyle('styles/compound.css');
 

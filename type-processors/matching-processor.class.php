@@ -19,14 +19,9 @@ class MatchingProcessor extends TypeProcessor  {
   /**
    * Processes xAPI data and returns a human readable HTML report
    *
-   * @param string $description Description
-   * @param array $crp Correct responses pattern
-   * @param string $response User given answer
-   * @param object $extras Additional data
-   *
-   * @return string HTML for the report
+   * @inheritdoc
    */
-  function generateHTML($description, $crp, $response, $extras) {
+  function generateHTML($description, $crp, $response, $extras = NULL, $rawScore = NULL, $maxScore = NULL, $scoreScale = NULL) {
     // We need some style for our report
     $this->setStyle('styles/matching.css');
 
@@ -45,15 +40,29 @@ class MatchingProcessor extends TypeProcessor  {
       return '';
     }
 
+    $descriptionHTML = $this->generateDescription($description);
     $tableHTML = $this->generateTable($mappedCRP,
       $mappedResponse,
       $dropzones,
       $draggables
     );
-    $container = '<div class="h5p-matching-container">' . $tableHTML . '</div>';
+    $container = '<div class="h5p-matching-container">' .
+                   $descriptionHTML . $tableHTML .
+                 '</div>';
 
     return $container;
   }
+
+    /**
+     * Generate description element
+     *
+     * @param string $description
+     *
+     * @return string Description element as a string
+     */
+    private function generateDescription($description) {
+        return'<p class="h5p-matching-task-description">' . $description . '</p>';
+    }
 
   /**
    * Create a map that links IDs from pattern to indexes in the droppable and

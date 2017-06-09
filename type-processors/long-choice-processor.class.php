@@ -10,13 +10,9 @@ class LongChoiceProcessor extends TypeProcessor {
    * Determines options for interaction and generates a human readable HTML
    * report.
    *
-   * @param string $description Description of interaction task
-   * @param array $crp Correct responses pattern
-   * @param string $response User response
-   * @param stdClass $extras Optional xAPI properties like choice descriptions
-   * @return string HTML for report
+   * @inheritdoc
    */
-  public function generateHTML($description, $crp, $response, $extras = NULL) {
+  public function generateHTML($description, $crp, $response, $extras = NULL, $rawScore = NULL, $maxScore = NULL, $scoreScaled = NULL) {
     // We need some style for our report
     $this->setStyle('styles/long-choice.css');
 

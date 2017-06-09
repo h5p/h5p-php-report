@@ -24,9 +24,9 @@
 .h5p-long-choice-task-description {
   font-size: 20px;
   font-weight: 600;
-
   width: 100%;
   border-bottom: 1px solid #e5e5e5e5;
+  margin-bottom: 20px;
 }
 
 .h5p-long-choice-word.h5p-long-choice-answered.h5p-long-choice-correct {

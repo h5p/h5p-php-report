@@ -28,11 +28,19 @@ abstract class TypeProcessor {
     // Grab extras
     $extras = $this->getExtras($xapiData);
 
+    // Grab scores
+    $rawScore = isset($xapiData->raw_score) ? $xapiData->raw_score : NULL;
+    $maxScore = isset($xapiData->max_score) ? $xapiData->max_score : NULL;
+    $scoreScale = isset($xapiData->score_scale) ? $xapiData->score_scale : NULL;
+
     return $this->generateHTML(
       $description,
       $crp,
       $this->getResponse($xapiData),
-      $extras
+      $extras,
+      $rawScore,
+      $maxScore,
+      $scoreScale
     );
   }
 
@@ -92,10 +100,13 @@ abstract class TypeProcessor {
    * @param array $crp Correct responses pattern
    * @param string $response User given answer
    * @param object $extras Additional data
+   * @param float $rawScore Raw score of the user
+   * @param float $maxScore Max score of task
+   * @param float $scoreScale Mapping of 1 raw score to actual task score
    *
    * @return string HTML for the report
    */
-  abstract function generateHTML($description, $crp, $response, $extras);
+  abstract function generateHTML($description, $crp, $response, $extras, $rawScore, $maxScore, $scoreScale);
 
   /**
    * Set style used by the processor.
