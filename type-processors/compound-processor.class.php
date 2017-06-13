@@ -12,7 +12,7 @@ class CompoundProcessor extends TypeProcessor {
    *
    * @inheritdoc
    */
-  public function generateHTML($description, $crp, $response, $extras, $rawScore = NULL, $maxScore = NULL, $scoreScaled = NULL) {
+  public function generateHTML($description, $crp, $response, $extras, $scoreSettings = NULL) {
     // We need some style for our report
     $this->setStyle('styles/compound.css');
 
@@ -28,10 +28,14 @@ class CompoundProcessor extends TypeProcessor {
     // Do not display description when children is empty
     if (!empty($reports) && !empty($description)) {
       $reports =
-          '<p class="h5p-compound-task-description">' . $description . '</p>' .
+          '<p class="h5p-reporting-description h5p-compound-task-description">' .
+          $description .
+          '</p>' .
           $reports;
     }
 
-    return '<div class="h5p-compound-container">' . $reports . '</div>';
+    return '<div class="h5p-reporting-container h5p-compound-container">' .
+           $reports .
+           '</div>';
   }
 }

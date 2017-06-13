@@ -21,7 +21,7 @@ class MatchingProcessor extends TypeProcessor  {
    *
    * @inheritdoc
    */
-  function generateHTML($description, $crp, $response, $extras = NULL, $rawScore = NULL, $maxScore = NULL, $scoreScale = NULL) {
+  function generateHTML($description, $crp, $response, $extras = NULL, $scoreSettings = NULL) {
     // We need some style for our report
     $this->setStyle('styles/matching.css');
 
@@ -40,29 +40,51 @@ class MatchingProcessor extends TypeProcessor  {
       return '';
     }
 
-    $descriptionHTML = $this->generateDescription($description);
+    $header = $this->generateHeader($description, $scoreSettings);
     $tableHTML = $this->generateTable($mappedCRP,
       $mappedResponse,
       $dropzones,
       $draggables
     );
-    $container = '<div class="h5p-matching-container">' .
-                   $descriptionHTML . $tableHTML .
+    $container = '<div class="h5p-reporting-container h5p-matching-container">' .
+                   $header . $tableHTML .
                  '</div>';
 
     return $container;
   }
 
-    /**
-     * Generate description element
-     *
-     * @param string $description
-     *
-     * @return string Description element as a string
-     */
-    private function generateDescription($description) {
-        return'<p class="h5p-matching-task-description">' . $description . '</p>';
-    }
+  /**
+   * Generate header element
+   *
+   * @param $description
+   * @param $scoreSettings
+   *
+   * @return string
+   */
+  private function generateHeader($description, $scoreSettings) {
+    $descriptionHtml = $this->generateDescription($description);
+    $scoreHtml = $this->generateScoreHtml($scoreSettings);
+
+    return "
+      <div class='h5p-matching-header'>
+        {$descriptionHtml}{$scoreHtml}
+      </div>
+    ";
+  }
+
+  /**
+   * Generate description element
+   *
+   * @param string $description
+   *
+   * @return string Description element as a string
+   */
+  private function generateDescription($description) {
+    return
+      '<p class="h5p-reporting-description h5p-matching-task-description">' .
+        $description .
+      '</p>';
+  }
 
   /**
    * Create a map that links IDs from pattern to indexes in the droppable and

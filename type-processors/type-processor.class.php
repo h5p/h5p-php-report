@@ -27,21 +27,100 @@ abstract class TypeProcessor {
 
     // Grab extras
     $extras = $this->getExtras($xapiData);
-
-    // Grab scores
-    $rawScore = isset($xapiData->raw_score) ? $xapiData->raw_score : NULL;
-    $maxScore = isset($xapiData->max_score) ? $xapiData->max_score : NULL;
-    $scoreScale = isset($xapiData->score_scale) ? $xapiData->score_scale : NULL;
+    $scoreSettings = $this->getScoreSettings($xapiData);
 
     return $this->generateHTML(
       $description,
       $crp,
       $this->getResponse($xapiData),
       $extras,
-      $rawScore,
-      $maxScore,
-      $scoreScale
+      $scoreSettings
     );
+  }
+
+  /**
+   * Get score settings
+   *
+   * @param object $xapiData
+   *
+   * @return object Score settings
+   */
+  protected function getScoreSettings($xapiData) {
+    $scoreSettings = (object) array();
+
+    if (!isset($xapiData->raw_score) || !isset($xapiData->max_score)) {
+      return $scoreSettings;
+    }
+
+    // Grab scores and score labels
+    $scoreSettings->rawScore = $xapiData->raw_score;
+    $scoreSettings->maxScore = $xapiData->max_score;
+
+    $scoreSettings->scoreLabel = 'Score:';
+    if (isset($xapiData->score_label)) {
+      $scoreSettings->scoreLabel = $xapiData->score_label;
+    }
+
+    $scoreSettings->scoreDelimiter = 'out of';
+    if (isset($xapiData->score_delimiter)) {
+      $scoreSettings->scoreDelimiter = $xapiData->score_delimiter;
+    }
+
+    // Scaled score
+    if (isset($xapiData->score_scale)) {
+      $scoreSettings->scoreScale = $xapiData->score_scale;
+
+      $scoreSettings->scaledScoreLabel = 'Scaled score:';
+      if (isset($xapiData->score_label)) {
+        $scoreSettings->scaledScoreLabel = $xapiData->scaled_score_label;
+      }
+    }
+
+    return $scoreSettings;
+  }
+
+  /**
+   * Generate score html
+   *
+   * @param object $scoreSettings Score settings
+   *
+   * @return string Score html
+   */
+  protected function generateScoreHtml($scoreSettings) {
+    if (!isset($scoreSettings->rawScore) || !isset($scoreSettings->maxScore)) {
+      return '';
+    }
+
+    // Generate html for score
+    $scoreLabel = $scoreSettings->scoreLabel;
+    $scoreDelimiter = $scoreSettings->scoreDelimiter;
+    $scoreHtml = "
+      <div class='h5p-reporting-score-container'>
+        <span class='h5p-reporting-score-label'>{$scoreLabel}</span>
+        <span class='h5p-reporting-score-raw'>{$scoreSettings->rawScore}</span>
+        <span class='h5p-reporting-score-delimiter'>{$scoreDelimiter}</span>
+        <span class='h5p-reporting-score-max'>{$scoreSettings->maxScore}</span>
+      </div>";
+
+    // Generate html for scaled score
+    $scaledHtml = "";
+    if (isset($scoreSettings->scoreScale)) {
+      $scaledScoreValue = $scoreSettings->scoreScale * $scoreSettings->rawScore;
+      $scaledHtml = "
+        <div class='h5p-reporting-scaled-container'>
+          <span class='h5p-reporting-scaled-label'>{$scoreSettings->scaledScoreLabel}</span>
+          <span class='h5p-reporting-scaled-score'>{$scaledScoreValue}</span>
+        </div>
+      ";
+    }
+
+    $html = "
+      <div class='h5p-reporting-score-wrapper'>
+        {$scoreHtml}{$scaledHtml}
+      </div>
+    ";
+
+    return $html;
   }
 
   /**
@@ -100,16 +179,16 @@ abstract class TypeProcessor {
    * @param array $crp Correct responses pattern
    * @param string $response User given answer
    * @param object $extras Additional data
-   * @param float $rawScore Raw score of the user
-   * @param float $maxScore Max score of task
-   * @param float $scoreScale Mapping of 1 raw score to actual task score
+   * @param object $scoreSettings Score settings
    *
    * @return string HTML for the report
    */
-  abstract function generateHTML($description, $crp, $response, $extras, $rawScore, $maxScore, $scoreScale);
+  abstract function generateHTML($description, $crp, $response, $extras, $scoreSettings);
 
   /**
    * Set style used by the processor.
+   *
+   * @param string $style Path to style
    */
   protected function setStyle($style) {
     $this->style = $style;

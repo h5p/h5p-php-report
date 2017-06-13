@@ -12,7 +12,7 @@ class ChoiceProcessor extends TypeProcessor {
    *
    * @inheritdoc
    */
-  public function generateHTML($description, $crp, $response, $extras = NULL, $rawScore = NULL, $maxScore = NULL, $scoreScale = NULL) {
+  public function generateHTML($description, $crp, $response, $extras = NULL, $scoreSettings = NULL) {
     if ($this->isLongChoice($extras)) {
       return H5PReport::getInstance()->generateReport($this->xapiData, 'long-choice');
     }
@@ -23,13 +23,32 @@ class ChoiceProcessor extends TypeProcessor {
     $correctAnswers = explode('[,]', $crp[0]);
     $responses = explode('[,]', $response);
 
-    $descriptionHTML = $this->generateDescription($description);
+    $headerHtml = $this->generateHeader($description, $scoreSettings);
     $tableHTML = $this->generateTable($extras, $correctAnswers, $responses);
 
     return
-      '<div class="h5p-choices-container">' .
-        $descriptionHTML . $tableHTML .
+      '<div class="h5p-reporting-container h5p-choices-container">' .
+        $headerHtml . $tableHTML .
       '</div>';
+  }
+
+  /**
+   * Generate header element
+   *
+   * @param $description
+   * @param $scoreSettings
+   *
+   * @return string
+   */
+  private function generateHeader($description, $scoreSettings) {
+    $descriptionHtml = $this->generateDescription($description);
+    $scoreHtml = $this->generateScoreHtml($scoreSettings);
+
+    return "
+      <div class='h5p-choices-header'>
+        {$descriptionHtml}{$scoreHtml}
+      </div>
+    ";
   }
 
   /**
@@ -40,7 +59,9 @@ class ChoiceProcessor extends TypeProcessor {
    * @return string Description element as a string
    */
   private function generateDescription($description) {
-    return'<p class="h5p-choices-task-description">' . $description . '</p>';
+    return'<p class="h5p-reporting-description h5p-choices-task-description">'
+          . $description .
+          '</p>';
   }
 
   /**

@@ -30,7 +30,7 @@ class FillInProcessor extends TypeProcessor {
    *
    * @inheritdoc
    */
-  public function generateHTML($description, $crp, $response, $extras, $rawScore = NULL, $maxScore = NULL, $scoreScale = NULL) {
+  public function generateHTML($description, $crp, $response, $extras, $scoreSettings = NULL) {
     // We need some style for our report
     $this->setStyle('styles/fill-in.css');
 
@@ -48,12 +48,32 @@ class FillInProcessor extends TypeProcessor {
       $caseMatters['caseSensitive']
     );
 
-    $container = '<div class="h5p-fill-in-container">' . $report .
-                 '</div>';
+    $header = $this->generateHeader($scoreSettings);
+    $container =
+      '<div class="h5p-reporting-container h5p-fill-in-container">' .
+        $header . $report .
+      '</div>';
     $footer = $this->generateFooter();
 
 
     return $container . $footer;
+  }
+
+  /**
+   * Generate header element
+   *
+   * @param $scoreSettings
+   *
+   * @return string
+   */
+  private function generateHeader($scoreSettings) {
+    $scoreHtml = $this->generateScoreHtml($scoreSettings);
+
+    return "
+      <div class='h5p-fill-in-header'>
+        {$scoreHtml}
+      </div>
+    ";
   }
 
   /**

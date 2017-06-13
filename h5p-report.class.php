@@ -48,7 +48,9 @@ class H5PReport {
    * @return array
    */
   public function getStylesUsed() {
-    $styles = array();
+    $styles = array(
+      'styles/shared-styles.css'
+    );
 
     // Fetch style used by each report processor
     foreach ($this->processors as $processor) {
