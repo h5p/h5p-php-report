@@ -14,7 +14,11 @@ class ChoiceProcessor extends TypeProcessor {
    */
   public function generateHTML($description, $crp, $response, $extras = NULL, $scoreSettings = NULL) {
     if ($this->isLongChoice($extras)) {
-      return H5PReport::getInstance()->generateReport($this->xapiData, 'long-choice');
+      return H5PReport::getInstance()->generateReport(
+        $this->xapiData,
+        'long-choice',
+        $this->disableScoring
+      );
     }
 
     // We need some style for our report

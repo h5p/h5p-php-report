@@ -9,15 +9,19 @@ abstract class TypeProcessor {
 
   protected $xapiData;
 
+  protected $disableScoring;
+
   /**
    * Generate HTML for report
    *
-   * @param $xapiData
+   * @param object $xapiData
+   * @param bool $disableScoring Disables scoring
    *
    * @return string HTML as string
    */
-  public function generateReport($xapiData) {
+  public function generateReport($xapiData, $disableScoring = false) {
     $this->xapiData = $xapiData;
+    $this->disableScoring = $disableScoring;
 
     // Grab description
     $description = $this->getDescription($xapiData);
@@ -87,7 +91,11 @@ abstract class TypeProcessor {
    * @return string Score html
    */
   protected function generateScoreHtml($scoreSettings) {
-    if (!isset($scoreSettings->rawScore) || !isset($scoreSettings->maxScore)) {
+    $showScores = isset($scoreSettings->rawScore)
+                  && isset($scoreSettings->maxScore)
+                  && !$this->disableScoring;
+
+    if (!$showScores) {
       return '';
     }
 
