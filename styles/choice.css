@@ -17,19 +17,21 @@
   text-align: left;
   border-bottom: 1px solid #ddd;
   padding: 5px;
-  line-height: 40px;
+  line-height: 2em;
 }
 
 .h5p-choices-table-heading {
   background-color: #233448;
   color: #FFFFFF;
-  height: 60px;
-  line-height: 10px;
 }
 
 .h5p-choices-table td.h5p-choices-choice {
-  padding-left: 0.5em;
   width: 75%;
+}
+
+.h5p-choices-table td.h5p-choices-choice,
+.h5p-choices-table td.h5p-choices-alternative {
+  padding-left: 1em;
 }
 
 .h5p-choices-user-answer {

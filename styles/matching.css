@@ -30,7 +30,7 @@
 .h5p-matching-table th {
   border-bottom: 1px solid #ddd;
   padding:5px;
-  line-height:40px;
+  line-height: 2em;
 }
 
 .h5p-matching-table th {
@@ -43,8 +43,7 @@
 
 .h5p-matching-table-heading {
   background-color: #233448;
-  color: #FFFFFF;	height:60px;
-  line-height:10px;
+  color: #FFFFFF;
 }
 
 .h5p-matching-table tr {

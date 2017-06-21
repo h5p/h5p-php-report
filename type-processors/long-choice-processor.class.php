@@ -57,10 +57,13 @@ class LongChoiceProcessor extends TypeProcessor {
    * @return string Description element
    */
   private function generateDescription($description) {
-    return
-      '<div class="h5p-reporting-description h5p-long-choice-task-description">' .
-        $description .
-      '</div>';
+    if (!$description) {
+      return '';
+    }
+
+    return '<div class="h5p-reporting-description h5p-long-choice-task-description">' .
+           $description .
+           '</div>';
   }
 
   /**

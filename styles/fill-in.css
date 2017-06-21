@@ -23,11 +23,13 @@
 .h5p-fill-in-correct-responses-pattern,
 .h5p-fill-in-user-response-wrong,
 .h5p-fill-in-user-response-correct {
+  display: inline-block;
   padding: 0.33em 0.66em;
   margin-left: 0.33em;
   margin-right: 0.33em;
   border-radius: 0.33em;
   white-space: nowrap;
+  line-height: 1.5;
 }
 
 .h5p-fill-in-correct-responses-pattern {

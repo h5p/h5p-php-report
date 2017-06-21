@@ -1,12 +1,13 @@
 .h5p-reporting-container {
   height: auto;
   border: solid 1px #C9C9C9;
-  margin: auto 10px;
+  margin: auto;
   padding: 30px 50px 30px 50px;
   background: #fff;
   font-size: 15px;
   color: #5C5C5C;
   box-shadow: 0 0 20px 0 rgba(0,0,0,0.12);
+  overflow: auto;
 }
 
 .h5p-reporting-description {

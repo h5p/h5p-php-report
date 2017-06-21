@@ -20,7 +20,7 @@ abstract class TypeProcessor {
    * @return string HTML as string
    */
   public function generateReport($xapiData, $disableScoring = false) {
-    $this->xapiData = $xapiData;
+    $this->xapiData       = $xapiData;
     $this->disableScoring = $disableScoring;
 
     // Grab description
@@ -30,7 +30,7 @@ abstract class TypeProcessor {
     $crp = $this->getCRP($xapiData);
 
     // Grab extras
-    $extras = $this->getExtras($xapiData);
+    $extras        = $this->getExtras($xapiData);
     $scoreSettings = $this->getScoreSettings($xapiData);
 
     return $this->generateHTML(
@@ -50,7 +50,7 @@ abstract class TypeProcessor {
    * @return object Score settings
    */
   protected function getScoreSettings($xapiData) {
-    $scoreSettings = (object) array();
+    $scoreSettings = (object) [];
 
     if (!isset($xapiData->raw_score) || !isset($xapiData->max_score)) {
       return $scoreSettings;
@@ -68,6 +68,11 @@ abstract class TypeProcessor {
     $scoreSettings->scoreDelimiter = 'out of';
     if (isset($xapiData->score_delimiter)) {
       $scoreSettings->scoreDelimiter = $xapiData->score_delimiter;
+    }
+
+    $scoreSettings->scaledScoreDelimiter = ',';
+    if (isset($xapiData->scaled_score_delimiter)) {
+      $scoreSettings->scaledScoreDelimiter = $xapiData->scaled_score_delimiter;
     }
 
     // Scaled score
@@ -100,27 +105,32 @@ abstract class TypeProcessor {
     }
 
     // Generate html for score
-    $scoreLabel = $scoreSettings->scoreLabel;
+    $scoreLabel     = $scoreSettings->scoreLabel;
     $scoreDelimiter = $scoreSettings->scoreDelimiter;
-    $scoreHtml = "
-      <div class='h5p-reporting-score-container'>
-        <span class='h5p-reporting-score-label'>{$scoreLabel}</span>
-        <span class='h5p-reporting-score-raw'>{$scoreSettings->rawScore}</span>
-        <span class='h5p-reporting-score-delimiter'>{$scoreDelimiter}</span>
-        <span class='h5p-reporting-score-max'>{$scoreSettings->maxScore}</span>
-      </div>";
+    $scaleDelimiter = '';
 
     // Generate html for scaled score
     $scaledHtml = "";
     if (isset($scoreSettings->scoreScale)) {
       $scaledScoreValue = $scoreSettings->scoreScale * $scoreSettings->rawScore;
-      $scaledHtml = "
+      $scaleDelimiter = $scoreSettings->scaledScoreDelimiter;
+      $scaledHtml       = "
         <div class='h5p-reporting-scaled-container'>
           <span class='h5p-reporting-scaled-label'>{$scoreSettings->scaledScoreLabel}</span>
           <span class='h5p-reporting-scaled-score'>{$scaledScoreValue}</span>
         </div>
       ";
     }
+
+    $scoreHtml = "
+      <div class='h5p-reporting-score-container'>
+        <span class='h5p-reporting-score-label'>{$scoreLabel}</span>
+        <span class='h5p-reporting-score-raw'>{$scoreSettings->rawScore}</span>
+        <span class='h5p-reporting-score-delimiter'>{$scoreDelimiter}</span>
+        <span class='h5p-reporting-score-max'>
+        {$scoreSettings->maxScore}{$scaleDelimiter}
+        </span>
+      </div>";
 
     $html = "
       <div class='h5p-reporting-score-wrapper'>
@@ -166,13 +176,13 @@ abstract class TypeProcessor {
    * @return array Correct responses pattern as an array
    */
   protected function getCRP($xapiData) {
-    return json_decode($xapiData->correct_responses_pattern, TRUE);
+    return json_decode($xapiData->correct_responses_pattern, true);
   }
 
   /**
    * Decode and retrieve user response from xAPI data.
    *
-   * @param stdClass$xapiData
+   * @param stdClass $xapiData
    *
    * @return string User response
    */

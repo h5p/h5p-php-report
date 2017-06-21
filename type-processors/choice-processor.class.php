@@ -104,7 +104,9 @@ class ChoiceProcessor extends TypeProcessor {
       }
 
       $row =
-        '<td>' . $choice->description->{'en-US'} . '</td>' .
+        '<td class="h5p-choices-alternative">' .
+            $choice->description->{'en-US'} .
+        '</td>' .
         '<td class="h5p-choices-icon-cell">' .
           '<span class="' . $userClasses . '"></span>' .
         '</td>' .

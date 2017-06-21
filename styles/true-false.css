@@ -54,3 +54,10 @@
   font-family: 'h5p-core-16';
   content: "\e894";
 }
+
+.h5p-true-false-user-response-wrong,
+.h5p-true-false-user-response-correct,
+.h5p-true-false-correct-responses-pattern {
+  white-space: nowrap;
+  display: inline-block;
+}
