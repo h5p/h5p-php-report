@@ -13,6 +13,11 @@
   line-height: 2.25;
 }
 
+.h5p-fill-in-container p {
+  line-height: 2.25;
+  margin-bottom: 0;
+}
+
 .h5p-fill-in-options {
   color: #7F7F7F;
   background-color: #F5F5F5;
@@ -24,7 +29,7 @@
 .h5p-fill-in-user-response-wrong,
 .h5p-fill-in-user-response-correct {
   display: inline-block;
-  padding: 0.33em 0.66em;
+  padding: 0.15em 0.66em;
   margin-left: 0.33em;
   margin-right: 0.33em;
   border-radius: 0.33em;

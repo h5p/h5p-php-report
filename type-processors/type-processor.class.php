@@ -112,12 +112,11 @@ abstract class TypeProcessor {
     // Generate html for scaled score
     $scaledHtml = "";
     if (isset($scoreSettings->scoreScale)) {
-      $scaledScoreValue = $scoreSettings->scoreScale * $scoreSettings->rawScore;
       $scaleDelimiter = $scoreSettings->scaledScoreDelimiter;
       $scaledHtml       = "
         <div class='h5p-reporting-scaled-container'>
           <span class='h5p-reporting-scaled-label'>{$scoreSettings->scaledScoreLabel}</span>
-          <span class='h5p-reporting-scaled-score'>{$scaledScoreValue}</span>
+          <span class='h5p-reporting-scaled-score'>{$scoreSettings->scoreScale}</span>
         </div>
       ";
     }
