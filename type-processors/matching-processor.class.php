@@ -221,7 +221,7 @@ class MatchingProcessor extends TypeProcessor  {
       $isCorrectClass = '';
       $responseCellContent = '';
       if (isset($response[$i])) {
-        $isCorrectClass = isset($crp[$i]) && in_array($response[$i], $crp) ?
+        $isCorrectClass = isset($response[$i]) && in_array($response[$i], $crp) ?
           'h5p-matching-draggable-correct' : 'h5p-matching-draggable-wrong';
         foreach ($draggables as $draggable) {
           if ($draggable->id === $response[$i]) {
