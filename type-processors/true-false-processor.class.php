@@ -56,18 +56,16 @@ class TrueFalseProcessor extends TypeProcessor {
    * @return string
    */
   private function generateHeader($description, $scoreSettings) {
-    $descriptionHtml = "
-      <p class='h5p-reporting-description h5p-true-false-task-description'>
-        {$description}
-      </p>
-    ";
+    $descriptionHtml =
+      "<p class='h5p-reporting-description h5p-true-false-task-description'>" .
+        "{$description}" .
+      "</p>";
     $scoreHtml = $this->generateScoreHtml($scoreSettings);
 
-    return "
-      <div class='h5p-choices-header'>
-        {$descriptionHtml}{$scoreHtml}
-      </div>
-    ";
+    return
+      "<div class='h5p-choices-header'>" .
+        "{$descriptionHtml}{$scoreHtml}" .
+      "</div>";
   }
 
   /**
@@ -78,9 +76,9 @@ class TrueFalseProcessor extends TypeProcessor {
   function generateFooter() {
     return
       '<div class="h5p-true-false-footer">' .
-      '<span class="h5p-true-false-correct-responses-pattern">Correct Answer</span>' .
-      '<span class="h5p-true-false-user-response-correct">Your correct answer</span>' .
-      '<span class="h5p-true-false-user-response-wrong">Your incorrect answer</span>' .
+        '<span class="h5p-true-false-correct-responses-pattern">Correct Answer</span>' .
+        '<span class="h5p-true-false-user-response-correct">Your correct answer</span>' .
+        '<span class="h5p-true-false-user-response-wrong">Your incorrect answer</span>' .
       '</div>';
   }
 }

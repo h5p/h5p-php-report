@@ -65,11 +65,10 @@ class MatchingProcessor extends TypeProcessor  {
     $descriptionHtml = $this->generateDescription($description);
     $scoreHtml = $this->generateScoreHtml($scoreSettings);
 
-    return "
-      <div class='h5p-matching-header'>
-        {$descriptionHtml}{$scoreHtml}
-      </div>
-    ";
+    return
+      "<div class='h5p-matching-header'>" .
+        $descriptionHtml . $scoreHtml .
+      "</div>";
   }
 
   /**
@@ -202,9 +201,8 @@ class MatchingProcessor extends TypeProcessor  {
       if ($i === 0) {
         // Add drop zone
         $row .=
-          '<th
-            class="' . 'h5p-matching-dropzone ' . $lastCellInRow . '"
-            rowspan="' . $dzRows . '"' .
+          '<th class="' . 'h5p-matching-dropzone ' . $lastCellInRow . '"' .
+            ' rowspan="' . $dzRows . '"' .
           '>' .
             $dropzone->value .
           '</th>';

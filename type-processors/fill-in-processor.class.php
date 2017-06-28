@@ -69,11 +69,10 @@ class FillInProcessor extends TypeProcessor {
   private function generateHeader($scoreSettings) {
     $scoreHtml = $this->generateScoreHtml($scoreSettings);
 
-    return "
-      <div class='h5p-fill-in-header'>
-        {$scoreHtml}
-      </div>
-    ";
+    return
+      "<div class='h5p-fill-in-header'>" .
+        $scoreHtml .
+      "</div>";
   }
 
   /**
@@ -84,9 +83,9 @@ class FillInProcessor extends TypeProcessor {
   function generateFooter() {
     return
       '<div class="h5p-fill-in-footer">' .
-      '<span class="h5p-fill-in-correct-responses-pattern">Correct Answer</span>' .
-      '<span class="h5p-fill-in-user-response-correct">Your correct answer</span>' .
-      '<span class="h5p-fill-in-user-response-wrong">Your incorrect answer</span>' .
+        '<span class="h5p-fill-in-correct-responses-pattern">Correct Answer</span>' .
+        '<span class="h5p-fill-in-user-response-correct">Your correct answer</span>' .
+        '<span class="h5p-fill-in-user-response-wrong">Your incorrect answer</span>' .
       '</div>';
   }
 

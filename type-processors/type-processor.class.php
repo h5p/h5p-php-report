@@ -113,29 +113,22 @@ abstract class TypeProcessor {
     $scaledHtml = "";
     if (isset($scoreSettings->scoreScale)) {
       $scaleDelimiter = $scoreSettings->scaledScoreDelimiter;
-      $scaledHtml       = "
-        <div class='h5p-reporting-scaled-container'>
-          <span class='h5p-reporting-scaled-label'>{$scoreSettings->scaledScoreLabel}</span>
-          <span class='h5p-reporting-scaled-score'>{$scoreSettings->scoreScale}</span>
-        </div>
-      ";
+      $scaledHtml =
+        "<div class='h5p-reporting-scaled-container'>" .
+          "<span class='h5p-reporting-scaled-label'>{$scoreSettings->scaledScoreLabel}</span>" .
+          "<span class='h5p-reporting-scaled-score'>{$scoreSettings->scoreScale}</span>" .
+        "</div>";
     }
 
-    $scoreHtml = "
-      <div class='h5p-reporting-score-container'>
-        <span class='h5p-reporting-score-label'>{$scoreLabel}</span>
-        <span class='h5p-reporting-score-raw'>{$scoreSettings->rawScore}</span>
-        <span class='h5p-reporting-score-delimiter'>{$scoreDelimiter}</span>
-        <span class='h5p-reporting-score-max'>
-        {$scoreSettings->maxScore}{$scaleDelimiter}
-        </span>
-      </div>";
+    $scoreHtml =
+      "<div class='h5p-reporting-score-container'>" .
+        "<span class='h5p-reporting-score-label'>{$scoreLabel}</span>" .
+        "<span class='h5p-reporting-score-raw'>{$scoreSettings->rawScore}</span>" .
+        "<span class='h5p-reporting-score-delimiter'>{$scoreDelimiter}</span>" .
+        "<span class='h5p-reporting-score-max'>{$scoreSettings->maxScore}{$scaleDelimiter}</span>" .
+      "</div>";
 
-    $html = "
-      <div class='h5p-reporting-score-wrapper'>
-        {$scoreHtml}{$scaledHtml}
-      </div>
-    ";
+    $html = "<div class='h5p-reporting-score-wrapper'>{$scoreHtml}{$scaledHtml}</div>";
 
     return $html;
   }

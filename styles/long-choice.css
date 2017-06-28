@@ -17,6 +17,10 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
+.h5p-long-choice-word {
+  margin-left: 0.25em;
+}
+
 .h5p-long-choice-word.h5p-long-choice-answered,
 .h5p-long-choice-word.h5p-long-choice-correct {
   padding: 3px 10px;

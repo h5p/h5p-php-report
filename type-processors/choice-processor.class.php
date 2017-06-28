@@ -48,11 +48,10 @@ class ChoiceProcessor extends TypeProcessor {
     $descriptionHtml = $this->generateDescription($description);
     $scoreHtml = $this->generateScoreHtml($scoreSettings);
 
-    return "
-      <div class='h5p-choices-header'>
-        {$descriptionHtml}{$scoreHtml}
-      </div>
-    ";
+    return
+      "<div class='h5p-choices-header'>" .
+        $descriptionHtml . $scoreHtml .
+      "</div>";
   }
 
   /**

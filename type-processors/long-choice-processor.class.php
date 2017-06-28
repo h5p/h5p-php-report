@@ -42,11 +42,10 @@ class LongChoiceProcessor extends TypeProcessor {
     $descriptionHtml = $this->generateDescription($description);
     $scoreHtml = $this->generateScoreHtml($scoreSettings);
 
-    return "
-      <div class='h5p-long-choice-header'>
-        {$descriptionHtml}{$scoreHtml}
-      </div>
-    ";
+    return
+      "<div class='h5p-long-choice-header'>" .
+        $descriptionHtml . $scoreHtml .
+      "</div>";
   }
 
   /**
@@ -62,7 +61,7 @@ class LongChoiceProcessor extends TypeProcessor {
     }
 
     return '<div class="h5p-reporting-description h5p-long-choice-task-description">' .
-           $description .
+             $description .
            '</div>';
   }
 

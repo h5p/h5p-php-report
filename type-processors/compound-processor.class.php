@@ -32,13 +32,13 @@ class CompoundProcessor extends TypeProcessor {
     if (!empty($reports) && !empty($description)) {
       $reports =
           '<p class="h5p-reporting-description h5p-compound-task-description">' .
-          $description .
+            $description .
           '</p>' .
           $reports;
     }
 
     return '<div class="h5p-reporting-container h5p-compound-container">' .
-           $reports .
+             $reports .
            '</div>';
   }
 }
