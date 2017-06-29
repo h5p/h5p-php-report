@@ -7,7 +7,7 @@
   font-size: 15px;
   color: #5C5C5C;
   box-shadow: 0 0 20px 0 rgba(0,0,0,0.12);
-  overflow: auto;
+  overflow: visible;
 }
 
 .h5p-reporting-description {
@@ -39,4 +39,10 @@
 .h5p-reporting-scaled-label,
 .h5p-reporting-score-label {
   font-weight: normal;
+}
+
+.h5p-reporting-scaled-label,
+.h5p-reporting-score,
+.h5p-reporting-scaled-score {
+  margin-left: 0.4em;
 }
