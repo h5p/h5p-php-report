@@ -1,5 +1,7 @@
 <?php
 
+require(__DIR__ . '/../html-purifier/HtmlPurifier.php');
+
 /**
  * Class TypeProcessor
  */
@@ -33,13 +35,13 @@ abstract class TypeProcessor {
     $extras        = $this->getExtras($xapiData);
     $scoreSettings = $this->getScoreSettings($xapiData);
 
-    return $this->generateHTML(
+    return HtmlPurifier::filter_xss($this->generateHTML(
       $description,
       $crp,
       $this->getResponse($xapiData),
       $extras,
       $scoreSettings
-    );
+    ));
   }
 
   /**
