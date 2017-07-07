@@ -19,3 +19,8 @@
   padding: 0;
   box-shadow: none;
 }
+
+.h5p-compound-container .h5p-result .h5p-result {
+  margin: 1em 0;
+  box-shadow: none;
+}
