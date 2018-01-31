@@ -1,3 +1,14 @@
+@font-face {
+  font-family: 'h5p-core-19';
+  src:  url('../fonts/h5p-core-19.eot?xg75hf');
+  src:  url('../fonts/h5p-core-19.eot?xg75hf#iefix') format('embedded-opentype'),
+  url('../fonts/h5p-core-19.ttf?xg75hf') format('truetype'),
+  url('../fonts/h5p-core-19.woff?xg75hf') format('woff'),
+  url('../fonts/h5p-core-19.svg?xg75hf#h5p-core-19') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .h5p-reporting-container {
   height: auto;
   border: solid 1px #C9C9C9;
