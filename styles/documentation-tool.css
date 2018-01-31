@@ -18,6 +18,10 @@
   font-weight: bold;
 }
 
+.h5p-goal-table {
+  width: 100%;
+}
+
 .h5p-goal-table tbody {
   border-top: none;
 }
@@ -42,6 +46,7 @@
   border-right: 1px solid #ddd;
   vertical-align: top;
   font-weight: bold;
+  width: 1em;
 }
 
 .h5p-goal-assessment-index {
@@ -57,7 +62,6 @@
   font-family: 'h5p-core-19';
   width: 1.6em;
   height: 1.6em;
-  margin-right: 0.5em;
   text-align: center;
 
   color: #000000;
@@ -98,9 +102,17 @@
   vertical-align: top;
 }
 
+.h5p-goal-table .h5p-goal-assessment-choice {
+  width: 1em;
+}
+
 .h5p-goal-assessment-alt-container .h5p-goal-assessment-choice {
   display: inline-block;
   margin: 0.3em 0 0.3em 0.7em;
+}
+
+.h5p-goal-assessment-alt-container .h5p-goal-assessment-choice:before {
+  margin-right: 0.5em;
 }
 
 .h5p-no-goals {
