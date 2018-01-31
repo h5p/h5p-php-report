@@ -29,7 +29,7 @@
 }
 
 .h5p-true-false-user-response-correct:before {
-  font-family: 'h5p-core-19';
+  font-family: 'h5p-reporting-icons';
   content: "\e90c";
 }
 
@@ -40,7 +40,7 @@
 }
 
 .h5p-true-false-user-response-wrong:before {
-  font-family: 'h5p-core-19';
+  font-family: 'h5p-reporting-icons';
   content: "\e894";
 }
 
