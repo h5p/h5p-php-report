@@ -1,0 +1,43 @@
+.h5p-iv-open-ended-container {
+  line-height: 2.25;
+}
+
+
+.h5p-iv-open-ended-header {
+
+}
+
+.h5p-iv-open-ended-response-container {
+  border: solid 2px #C3C3C3;
+  padding: 1em;
+  height: 300px;
+  overflow-y: scroll;
+  line-height: 1;
+}
+
+
+.h5p-iv-open-ended-response-container::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.h5p-iv-open-ended-response-container::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.h5p-iv-open-ended-response-container::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+.h5p-iv-open-ended-visible {
+  display: visible;
+}
+
+.h5p-iv-open-ended-hidden {
+  display: none;
+}

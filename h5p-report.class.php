@@ -22,6 +22,7 @@ class H5PReport {
     'H5P.GoalsPage' => 'GoalsPageProcessor',
     'H5P.GoalsAssessmentPage' => 'GoalsAssessmentPageProcessor',
     'H5P.StandardPage' => 'StandardPageProcessor',
+    'H5P.IVOpenEndedQuestion' => 'IVOpenEndedQuestionProcessor',
   );
 
   private $processors = array();
@@ -61,9 +62,72 @@ class H5PReport {
       }
     }
 
+    // // Do not generate reports for gradable questions TODO: Better comment?
+    if ($interactionType == 'H5P.IVOpenEndedQuestion') {
+      return  '';
+    }
+
     // Generate and return report from xAPI data
     return $this->processors[$interactionType]
       ->generateReport($xapiData, $disableScoring);
+  }
+
+  /**
+   * Generate the proper report depending on xAPI data.
+   *
+   * @param object $xapiData
+   * @param string $forcedProcessor Force a processor type
+   * @param bool $disableScoring Disables scoring for the report
+   *
+   * @return string A report
+   */
+  public function generateGradableReports($xapiData) {
+    /**
+     * highlight_string("<?php\n\$data =\n" . var_export($xapiData, true) . ";\n?>");
+     */
+
+    $results = array();
+
+    foreach ($xapiData as $childData) {
+     $interactionType = self::getContentTypeProcessor($childData);
+
+     if (!isset($this->processors[$interactionType])) {
+       // Not used before. Initialize new processor
+       if (array_key_exists($interactionType, self::$contentTypeProcessors)) {
+         $this->processors[$interactionType] = new self::$contentTypeProcessors[$interactionType]();
+       }
+     }
+
+     if ($interactionType == 'H5P.IVOpenEndedQuestion') {
+       array_push($results, $childData);
+     }
+    }
+
+    if (count($results) > 0) {
+      return self::buildContainer($results);
+    }
+
+    // Generate and return report from xAPI data TODO: return something better
+    return ' ';
+  }
+
+  private function buildContainer($results) {
+    $container = '<div id="gradable-container" class="h5p-iv-open-ended-container">';
+
+    foreach ($results as $index=>$child) {
+      $container .= self::buildChild($child, $index);
+    }
+
+    $container .= '</div>';
+
+    return $container;
+  }
+
+  private function buildChild($data, $index) {
+    // Generate and return report from xAPI data
+    $interactionType = self::getContentTypeProcessor($data);
+    return $this->processors[$interactionType]
+      ->generateReport($data);
   }
 
   /**

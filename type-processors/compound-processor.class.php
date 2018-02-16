@@ -13,6 +13,9 @@ class CompoundProcessor extends TypeProcessor {
    * @inheritdoc
    */
   public function generateHTML($description, $crp, $response, $extras, $scoreSettings = NULL) {
+
+    // $counter++;
+    // echo($counter);
     // We need some style for our report
     $this->setStyle('styles/compound.css');
 
@@ -20,6 +23,7 @@ class CompoundProcessor extends TypeProcessor {
     $reports = '';
 
     if (isset($extras->children)) {
+      $reports .= $H5PReport->generateGradableReports($extras->children);
       foreach ($extras->children as $childData) {
         $reports .=
           '<div class="h5p-result">' .
