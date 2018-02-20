@@ -20,8 +20,9 @@ class IVOpenEndedQuestionProcessor extends TypeProcessor {
     // We need some style for our report
     $this->setStyle('styles/iv-open-ended.css');
 
+    // Send the subcontent id to the view so it can render and grade the correct content
     $container =
-      '<div class="h5p-iv-open-ended-container' . ($this->counter == 0 ? ' h5p-iv-open-ended-visible' : ' h5p-iv-open-ended-hidden') . '">' .
+      '<div class="h5p-iv-open-ended-container ' . ($this->counter == 0 ? "h5p-iv-open-ended-visible" : "h5p-iv-open-ended-hidden") . '" h5p-report-data=' . $extras->subcontent_id . '>' .
         $description .
         '<div class="h5p-iv-open-ended-response-container">' .
           $response .

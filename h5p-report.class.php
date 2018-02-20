@@ -62,18 +62,13 @@ class H5PReport {
       }
     }
 
-    // // Do not generate reports for gradable questions TODO: Better comment?
-    if ($interactionType == 'H5P.IVOpenEndedQuestion') {
-      return  '';
-    }
-
     // Generate and return report from xAPI data
     return $this->processors[$interactionType]
       ->generateReport($xapiData, $disableScoring);
   }
 
   /**
-   * Generate the proper report depending on xAPI data.
+   * Generate the proper report for dynamically gradable content types depending on xAPI data.
    *
    * @param object $xapiData
    * @param string $forcedProcessor Force a processor type
@@ -82,10 +77,6 @@ class H5PReport {
    * @return string A report
    */
   public function generateGradableReports($xapiData) {
-    /**
-     * highlight_string("<?php\n\$data =\n" . var_export($xapiData, true) . ";\n?>");
-     */
-
     $results = array();
 
     foreach ($xapiData as $childData) {
@@ -111,6 +102,13 @@ class H5PReport {
     return ' ';
   }
 
+  /**
+   * Generate the wrapping element for a grading container
+   *
+   * @param object $results
+   *
+   * @return string HTML of the container and within it, gradable elements
+   */
   private function buildContainer($results) {
     $container = '<div id="gradable-container" class="h5p-iv-open-ended-container">';
 
@@ -123,11 +121,35 @@ class H5PReport {
     return $container;
   }
 
+  /**
+   * Generate each of the gradable elements
+   *
+   * @param object $data
+   * @param int $index
+   *
+   * @return string HTML of a gradable element
+   */
   private function buildChild($data, $index) {
     // Generate and return report from xAPI data
     $interactionType = self::getContentTypeProcessor($data);
     return $this->processors[$interactionType]
       ->generateReport($data);
+  }
+
+  /**
+   * Removes gradable children from xAPI data
+   *
+   * @return array
+   */
+  public function stripGradableChildren($xapiData) {
+
+    function filter($data) {
+      $contentTypeProcessor = H5PReport::getContentTypeProcessor($data);
+      $interactionType = $contentTypeProcessor;
+      return $interactionType !== 'H5P.IVOpenEndedQuestion';
+    }
+
+    return array_filter($xapiData, "filter");
   }
 
   /**
@@ -151,6 +173,19 @@ class H5PReport {
     return $styles;
   }
 
+
+  /**
+   * List of JS scripts to be used by the processors when rendering the report.
+   *
+   * @return array
+   */
+  public function getScriptsUsed() {
+    $scripts = array(
+      'scripts/iv-open-ended-question.js'
+    );
+    return $scripts;
+  }
+
   /**
    * Caches instance of report generator.
    * @return \H5PReport
@@ -171,7 +206,7 @@ class H5PReport {
    *
    * @return string|null Content type processor
    */
-  private static function getContentTypeProcessor($xapiData) {
+  public static function getContentTypeProcessor($xapiData) {
     if (!isset($xapiData->additionals)) {
       return null;
     }

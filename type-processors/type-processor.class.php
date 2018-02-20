@@ -149,6 +149,11 @@ abstract class TypeProcessor {
       $extras->children = $xapiData->children;
     }
 
+    // Send the content id to the view for dynamic grading 
+    if (isset($xapiData->id)) {
+      $extras->subcontent_id = $xapiData->id;
+    }
+
     return $extras;
   }
 
