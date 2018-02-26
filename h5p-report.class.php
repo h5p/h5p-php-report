@@ -98,7 +98,7 @@ class H5PReport {
       return self::buildContainer($results);
     }
 
-    // Generate and return report from xAPI data TODO: return something better
+    // Generate and return report from xAPI data 
     return ' ';
   }
 
@@ -110,7 +110,7 @@ class H5PReport {
    * @return string HTML of the container and within it, gradable elements
    */
   private function buildContainer($results) {
-    $container = '<div id="gradable-container" class="h5p-iv-open-ended-container">';
+    $container = '<div id="gradable-container" class="h5p-iv-open-ended-grading-container">';
 
     foreach ($results as $index=>$child) {
       $container .= self::buildChild($child, $index);

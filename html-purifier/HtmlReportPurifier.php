@@ -41,7 +41,8 @@ class HtmlReportPurifier {
       'h4', 'h5', 'h6', 'header', 'hgroup', 'i', 'img', 'ins', 'li',
       'menu', 'meter', 'nav', 'ol', 'p', 'section', 'span', 'strong',
       'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
-      'thead', 'time', 'tr', 'tt', 'u', 'ul'), $allowedStyles = FALSE) {
+      'thead', 'time', 'tr', 'tt', 'u', 'ul', 'button', 's'), $allowedStyles = FALSE) {
+
     if (strlen($string) == 0) {
       return $string;
     }
@@ -96,7 +97,7 @@ class HtmlReportPurifier {
    * If the element isn't allowed, an empty string. Otherwise, the cleaned up
    * version of the HTML element.
    */
-  private static function _filter_xss_split($m, $store = FALSE, $allowedStyles = FALSE) {
+  private static function _filter_xss_split($m, $store = FALSE, $allowedStyles = TRUE) {
     static $allowed_html;
 
     if ($store) {
@@ -147,8 +148,14 @@ class HtmlReportPurifier {
     $xhtml_slash = $count ? ' /' : '';
 
     // Clean up attributes.
+    $stylePatterns = array();
+    $stylePatterns[] = '/^color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
+    $stylePatterns[] = '/^background-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
+    // $stylePatterns[] = '/^align: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
+    $stylePatterns[] = '/^^(height:\:?[0-9]{1,8}px; width:\:?[0-9]{1,8}px|width\:?[0-9]{1,8}px;|height:500px;)?$/i';
+    // $stylePatterns[] = '/^height: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
 
-    $attr2 = implode(' ', self::_filter_xss_attributes($attrList, $allowedStyles ? $allowedStyles : FALSE));
+    $attr2 = implode(' ', self::_filter_xss_attributes($attrList, $stylePatterns));
     $attr2 = preg_replace('/[<>]/', '', $attr2);
     $attr2 = strlen($attr2) ? ' ' . $attr2 : '';
 
@@ -164,7 +171,7 @@ class HtmlReportPurifier {
    * @return array Cleaned up version of the HTML attributes.
    * Cleaned up version of the HTML attributes.
    */
-  private static function _filter_xss_attributes($attr, $allowedStyles = FALSE) {
+  private static function _filter_xss_attributes($attr, $allowedStyles = TRUE) {
     $attrArr  = array();
     $mode     = 0;
     $attrName = '';
