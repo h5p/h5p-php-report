@@ -18,16 +18,19 @@ class IVOpenEndedQuestionProcessor extends TypeProcessor {
    */
   public function generateHTML($description, $crp, $response, $extras, $scoreSettings) {
 
+    // Strip out the colon since it breaks when added to an attribute
+    $scoreLabel = str_replace(":", "", $scoreSettings->scoreLabel);
+
     // We need some style for our report
     $this->setStyle('styles/iv-open-ended.css');
-    // Send the subcontent id to the view so it can render and grade the correct content
+    // Send the subcontent id amongst other data to the view
     $container =
       '<div class="h5p-iv-open-ended-reporting-container ' . // Send subcontent id and score scale factor to the front end
       ($this->counter == 0 ? "h5p-iv-open-ended-reporting-visible" : "h5p-iv-open-ended-reporting-hidden") .
       '" data-report-id="' . $extras->subcontent_id .
       '" data-report-scale="' . $scoreSettings->scaledScorePerScore .
       '" data-report-max="' . $scoreSettings->parentMaxScore .
-      '" data-report-score-label="' . $scoreSettings->reportingScoreLabel . 
+      '" data-report-score-label="' . $scoreLabel .
       '" data-report-score-delimiter="' . $scoreSettings->scoreDelimiter .
       '" data-report-questions-remaining-label="' . $scoreSettings->questionsRemainingLabel .
       '" data-report-submit-button-label="' . $scoreSettings->submitButtonLabel .
