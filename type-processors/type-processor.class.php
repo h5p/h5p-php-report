@@ -35,26 +35,13 @@ abstract class TypeProcessor {
     $extras        = $this->getExtras($xapiData);
     $scoreSettings = $this->getScoreSettings($xapiData);
 
-    $stylePatterns = array();
-    $stylePatterns[] = '/^color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
-    $stylePatterns[] = '/^background-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
-
-    $tags = array();
-    $tags =  array(
-        'a', 'b', 'br', 'code', 'col', 'colgroup', 'dd', 'div', 'dl',
-        'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3',
-        'h4', 'h5', 'h6', 'header', 'hgroup', 'i', 'img', 'ins', 'li',
-        'menu', 'meter', 'nav', 'ol', 'p', 'section', 'span', 'strong',
-        'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
-        'thead', 'time', 'tr', 'tt', 'u', 'ul', 'button', 's', 'table');
-
     return HtmlReportPurifier::filter_xss($this->generateHTML(
       $description,
       $crp,
       $this->getResponse($xapiData),
       $extras,
       $scoreSettings
-    ), $tags, true);
+    ));
   }
 
   /**
@@ -118,6 +105,12 @@ abstract class TypeProcessor {
     if (isset($xapiData->submit_button_label)) {
       $scoreSettings->submitButtonLabel = $xapiData->submit_button_label;
     }
+
+    $scoreSettings->reportingScoreLabel = 'Score';
+    if (isset($xapiData->reportingScoreLabel)) {
+      $scoreSettings->reportingScoreLabel = $xapiData->reportingScoreLabel;
+    }
+
     return $scoreSettings;
   }
 

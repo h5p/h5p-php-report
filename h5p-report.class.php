@@ -98,7 +98,7 @@ class H5PReport {
       return self::buildContainer($results);
     }
 
-    // Generate and return report from xAPI data 
+    // Return nothing if there are no reports 
     return ' ';
   }
 

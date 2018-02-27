@@ -36,12 +36,12 @@ class HtmlReportPurifier {
    * @ingroup sanitation
    */
   public static function filter_xss($string, $allowed_tags =  array(
-      'a', 'b', 'br', 'code', 'col', 'colgroup', 'dd', 'div', 'dl',
+      'a', 'b', 'button', 'br', 'code', 'col', 'colgroup', 'dd', 'div', 'dl',
       'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3',
       'h4', 'h5', 'h6', 'header', 'hgroup', 'i', 'img', 'ins', 'li',
-      'menu', 'meter', 'nav', 'ol', 'p', 'section', 'span', 'strong',
+      'menu', 'meter', 'nav', 'ol', 'p', 's', 'section', 'span', 'strong',
       'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
-      'thead', 'time', 'tr', 'tt', 'u', 'ul', 'button', 's'), $allowedStyles = FALSE) {
+      'thead', 'time', 'tr', 'tt', 'u', 'ul'), $allowedStyles = FALSE) {
 
     if (strlen($string) == 0) {
       return $string;

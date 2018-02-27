@@ -27,7 +27,7 @@ class IVOpenEndedQuestionProcessor extends TypeProcessor {
       '" data-report-id="' . $extras->subcontent_id .
       '" data-report-scale="' . $scoreSettings->scaledScorePerScore .
       '" data-report-max="' . $scoreSettings->parentMaxScore .
-      '" data-report-score-label="' . 'Score' . //TODO escape colon
+      '" data-report-score-label="' . $scoreSettings->reportingScoreLabel . 
       '" data-report-score-delimiter="' . $scoreSettings->scoreDelimiter .
       '" data-report-questions-remaining-label="' . $scoreSettings->questionsRemainingLabel .
       '" data-report-submit-button-label="' . $scoreSettings->submitButtonLabel .
