@@ -151,9 +151,7 @@ class HtmlReportPurifier {
     $stylePatterns = array();
     $stylePatterns[] = '/^color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
     $stylePatterns[] = '/^background-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
-    // $stylePatterns[] = '/^align: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
-    $stylePatterns[] = '/^^(height:\:?[0-9]{1,8}px; width:\:?[0-9]{1,8}px|width\:?[0-9]{1,8}px;|height:500px;)?$/i';
-    // $stylePatterns[] = '/^height: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
+    $stylePatterns[] = '/^(height:\:?[0-9]{1,8}px; width:\:?[0-9]{1,8}px|width\:?[0-9]{1,8}px|height:500px)?$/i';
 
     $attr2 = implode(' ', self::_filter_xss_attributes($attrList, $stylePatterns));
     $attr2 = preg_replace('/[<>]/', '', $attr2);

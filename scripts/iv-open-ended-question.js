@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     };
   }
 
+  updateMainGradeBookContainer();
+
   /**
    * Add a title
    *
@@ -72,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
     submitButton.classList.add('h5p-iv-open-ended-reporting-submit-button');
     submitButton.id = 'h5p-iv-open-ended-reporting-submit-button-' + index;
     submitButton.innerHTML = submitButtonLabel;
+
     submitButtonWrapper.append(submitButton);
     return submitButtonWrapper;
   }
@@ -119,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function() {
       if (this.value > maxScores[index]) {
         this.value = maxScores[index];
       }
+
+      var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
+      submitButton.disabled = false;
     });
 
     // Add logic for the corresponding submit button
@@ -128,8 +134,8 @@ document.addEventListener("DOMContentLoaded", function() {
         subcontent_id: input.subcontentID,
         score: input.value,
         maxScore: input.maxScore
-      }, function(data) {
-        renderAfterSubmit(input, index, data.totalUngraded)
+      }, function(response) {
+        renderAfterSubmit(input, index, response.data.totalUngraded)
       });
     });
   });
@@ -145,12 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateGradeBookContainer(index, input.value, input.scaleFactor);
     updateMainGradeBookContainer();
     updateQuestionCounter(totalUngraded);
-    // // Update the question counter
-    // H5P.jQuery.get(data_for_page.getSubContentEndpoint, {subcontent_id: input.subcontentID}, function(response) {
-    //   updateQuestionCounter(response.data.totalUngraded);
-    // });
   }
-
 
   /**
    * hide inputs
@@ -229,6 +230,12 @@ document.addEventListener("DOMContentLoaded", function() {
       loadedMaxScore.innerHTML = scoreDelimiter + ' ' + response.data.maxScore;
       maxScores[index] = response.data.maxScore;
 
+      // Disable buttons if the content type hasn't been graded yet
+      if (response.data.score === null) {
+        var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
+        submitButton.disabled = true;
+      }
+
       updateQuestionCounter(response.data.totalUngraded);
     });
   }
@@ -244,8 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
       container.querySelectorAll('.h5p-iv-open-ended-reporting-question-counter').forEach(function(questionCounter) {
         questionCounter.innerHTML = '<span>' + totalUngraded + ' ' + questionsRemainingLabel + '</span>';
       });
-    }
-    else {
+    } else {
       container.querySelectorAll('.h5p-iv-open-ended-reporting-question-counter').forEach(function(questionCounter) {
         questionCounter.innerHTML = '<span>All questions have been answered</span>';
         questionCounter.classList.add('reporting-completed');
@@ -311,16 +317,15 @@ document.addEventListener("DOMContentLoaded", function() {
     currentQuestion.classList.remove('h5p-iv-open-ended-reporting-hidden');
   }
 
-
-    /**
-     * Finds an ancestor that matches a selector
-     *
-     * @param  {type} el
-     * @param  {type} sel
-     * @return {HTMLElement} element to be returned
-     */
-    function findAncestor (el, sel) {
-      while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el,sel)));
-      return el;
-    }
+  /**
+   * Finds an ancestor that matches a selector
+   *
+   * @param  {type} el
+   * @param  {type} sel
+   * @return {HTMLElement} element to be returned
+   */
+  function findAncestor (el, sel) {
+    while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el,sel)));
+    return el;
+  }
 });
