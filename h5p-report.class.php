@@ -142,14 +142,11 @@ class H5PReport {
    * @return array
    */
   public function stripGradableChildren($xapiData) {
-
-    function filter($data) {
+    return array_filter($xapiData, function ($data) {
       $contentTypeProcessor = H5PReport::getContentTypeProcessor($data);
       $interactionType = $contentTypeProcessor;
       return $interactionType !== 'H5P.IVOpenEndedQuestion';
-    }
-
-    return array_filter($xapiData, "filter");
+    });
   }
 
   /**
