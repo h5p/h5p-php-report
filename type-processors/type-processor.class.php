@@ -21,7 +21,7 @@ abstract class TypeProcessor {
    *
    * @return string HTML as string
    */
-  public function generateReport($xapiData, $disableScoring = false) {
+  public function generateReport($xapiData, $disableScoring = false, $allowStyles = false) {
     $this->xapiData       = $xapiData;
     $this->disableScoring = $disableScoring;
 
@@ -41,7 +41,14 @@ abstract class TypeProcessor {
       $this->getResponse($xapiData),
       $extras,
       $scoreSettings
-    ));
+    ), array(
+        'a', 'b', 'button', 'br', 'code', 'col', 'colgroup', 'dd', 'div', 'dl',
+        'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3',
+        'h4', 'h5', 'h6', 'header', 'hgroup', 'i', 'img', 'ins', 'li',
+        'menu', 'meter', 'nav', 'ol', 'p', 's', 'section', 'span', 'strong',
+        'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
+        'thead', 'time', 'tr', 'tt', 'u', 'ul')
+    , $allowStyles);
   }
 
   /**
@@ -85,6 +92,35 @@ abstract class TypeProcessor {
       if (isset($xapiData->score_label)) {
         $scoreSettings->scaledScoreLabel = $xapiData->scaled_score_label;
       }
+
+      // Send data on scaled scores and parent max score for dynamic grading
+      if (isset($xapiData->scaled_score_per_score)) {
+        $scoreSettings->scaledScorePerScore = $xapiData->scaled_score_per_score;
+      }
+
+      if (isset($xapiData->parent_max_score)) {
+        $scoreSettings->parentMaxScore = $xapiData->parent_max_score;
+      }
+    }
+
+    $scoreSettings->questionsRemainingLabel = 'questions remaining to grade';
+    if (isset($xapiData->questions_remaining_label)) {
+      $scoreSettings->questionsRemainingLabel = $xapiData->questions_remaining_label;
+    }
+
+    $scoreSettings->submitButtonLabel = 'Submit grade';
+    if (isset($xapiData->submit_button_label)) {
+      $scoreSettings->submitButtonLabel = $xapiData->submit_button_label;
+    }
+
+    $scoreSettings->reportingScoreLabel = 'Score';
+    if (isset($xapiData->reportingScoreLabel)) {
+      $scoreSettings->reportingScoreLabel = $xapiData->reportingScoreLabel;
+    }
+
+    $scoreSettings->IVOpenEndedQuestionTitle = 'Open-ended Question';
+    if (isset($xapiData->IVOpenEndedQuestionTitle)) {
+      $scoreSettings->IVOpenEndedQuestionTitle = $xapiData->IVOpenEndedQuestionTitle;
     }
 
     return $scoreSettings;
@@ -126,7 +162,10 @@ abstract class TypeProcessor {
       "<div class='h5p-reporting-score-container'>" .
         "<span class='h5p-reporting-score-label'>{$scoreLabel}</span>" .
         "<span class='h5p-reporting-score'>" .
-          $scoreSettings->rawScore . " " . $scoreDelimiter . " " .
+          "<span class='h5p-reporting-raw-score'>" .
+            $scoreSettings->rawScore .
+          "</span>" .
+          " " . $scoreDelimiter . " " .
           $scoreSettings->maxScore . $scaleDelimiter .
         "</span>" .
       "</div>";
@@ -147,6 +186,11 @@ abstract class TypeProcessor {
     $extras = ($xapiData->additionals === '' ? new stdClass() : json_decode($xapiData->additionals));
     if (isset($xapiData->children)) {
       $extras->children = $xapiData->children;
+    }
+
+    // Send the content id to the view for dynamic grading
+    if (isset($xapiData->id)) {
+      $extras->subcontent_id = $xapiData->id;
     }
 
     return $extras;

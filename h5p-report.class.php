@@ -22,6 +22,7 @@ class H5PReport {
     'H5P.GoalsPage' => 'GoalsPageProcessor',
     'H5P.GoalsAssessmentPage' => 'GoalsAssessmentPageProcessor',
     'H5P.StandardPage' => 'StandardPageProcessor',
+    'H5P.IVOpenEndedQuestion' => 'IVOpenEndedQuestionProcessor',
   );
 
   private $processors = array();
@@ -62,8 +63,88 @@ class H5PReport {
     }
 
     // Generate and return report from xAPI data
+    // Allow compound content types to have styles in case they are rendering gradable containers
     return $this->processors[$interactionType]
-      ->generateReport($xapiData, $disableScoring);
+      ->generateReport($xapiData, $disableScoring, ($interactionType == "compound" ? true : false));
+  }
+
+  /**
+   * Generate the proper report for dynamically gradable content types depending on xAPI data.
+   *
+   * @param object $xapiData
+   * @return string A report
+   */
+  public function generateGradableReports($xapiData) {
+    $results = array();
+
+    foreach ($xapiData as $childData) {
+     $interactionType = self::getContentTypeProcessor($childData);
+
+     if (!isset($this->processors[$interactionType])) {
+       // Not used before. Initialize new processor
+       if (array_key_exists($interactionType, self::$contentTypeProcessors)) {
+         $this->processors[$interactionType] = new self::$contentTypeProcessors[$interactionType]();
+       }
+     }
+
+     if ($interactionType == 'H5P.IVOpenEndedQuestion') {
+       array_push($results, $childData);
+     }
+    }
+
+    if (count($results) > 0) {
+      return self::buildContainer($results);
+    }
+
+    // Return nothing if there are no reports
+    return ' ';
+  }
+
+  /**
+   * Generate the wrapping element for a grading container
+   *
+   * @param object $results
+   *
+   * @return string HTML of the container and within it, gradable elements
+   */
+  private function buildContainer($results) {
+    $container = '<div id="gradable-container" class="h5p-iv-open-ended-grading-container">';
+
+    foreach ($results as $index=>$child) {
+      $container .= self::buildChild($child, $index);
+    }
+
+    $container .= '</div>';
+
+    return $container;
+  }
+
+  /**
+   * Generate each of the gradable elements
+   *
+   * @param object $data
+   * @param int $index
+   *
+   * @return string HTML of a gradable element
+   */
+  private function buildChild($data, $index) {
+    // Generate and return report from xAPI data
+    $interactionType = self::getContentTypeProcessor($data);
+    return $this->processors[$interactionType]
+      ->generateReport($data, false, true);
+  }
+
+  /**
+   * Removes gradable children from xAPI data
+   *
+   * @return array
+   */
+  public function stripGradableChildren($xapiData) {
+    return array_filter($xapiData, function ($data) {
+      $contentTypeProcessor = H5PReport::getContentTypeProcessor($data);
+      $interactionType = $contentTypeProcessor;
+      return $interactionType !== 'H5P.IVOpenEndedQuestion';
+    });
   }
 
   /**
@@ -87,6 +168,19 @@ class H5PReport {
     return $styles;
   }
 
+
+  /**
+   * List of JS scripts to be used by the processors when rendering the report.
+   *
+   * @return array
+   */
+  public function getScriptsUsed() {
+    $scripts = array(
+      'scripts/iv-open-ended-question.js'
+    );
+    return $scripts;
+  }
+
   /**
    * Caches instance of report generator.
    * @return \H5PReport
@@ -107,7 +201,7 @@ class H5PReport {
    *
    * @return string|null Content type processor
    */
-  private static function getContentTypeProcessor($xapiData) {
+  public static function getContentTypeProcessor($xapiData) {
     if (!isset($xapiData->additionals)) {
       return null;
     }
