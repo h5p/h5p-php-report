@@ -63,17 +63,15 @@ class H5PReport {
     }
 
     // Generate and return report from xAPI data
+    // Allow compound content types to have styles in case they are rendering gradable containers
     return $this->processors[$interactionType]
-      ->generateReport($xapiData, $disableScoring);
+      ->generateReport($xapiData, $disableScoring, ($interactionType == "compound" ? true : false));
   }
 
   /**
    * Generate the proper report for dynamically gradable content types depending on xAPI data.
    *
    * @param object $xapiData
-   * @param string $forcedProcessor Force a processor type
-   * @param bool $disableScoring Disables scoring for the report
-   *
    * @return string A report
    */
   public function generateGradableReports($xapiData) {
@@ -98,7 +96,7 @@ class H5PReport {
       return self::buildContainer($results);
     }
 
-    // Return nothing if there are no reports 
+    // Return nothing if there are no reports
     return ' ';
   }
 
@@ -133,7 +131,7 @@ class H5PReport {
     // Generate and return report from xAPI data
     $interactionType = self::getContentTypeProcessor($data);
     return $this->processors[$interactionType]
-      ->generateReport($data);
+      ->generateReport($data, false, true);
   }
 
   /**

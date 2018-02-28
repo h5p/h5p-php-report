@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var currentQuestion = questionElements[0];
 
   // Translatable labels
+  var IVOpenEndedQuestionTitle;
   var scoreLabel;
   var scoreDelimiter;
   var questionsRemainingLabel;
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Render each of the question containers
   for (var i = 0; i < questionElements.length; i++) {
+    IVOpenEndedQuestionTitle = questionElements[i].getAttribute('data-report-iv-open-ended-question-title');
     scoreLabel = questionElements[i].getAttribute('data-report-score-label');
     scoreDelimiter = questionElements[i].getAttribute('data-report-score-delimiter');
     questionsRemainingLabel = questionElements[i].getAttribute('data-report-questions-remaining-label');
@@ -50,13 +52,13 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Add a title
    *
-   * @param  {int} index
+   * @param {number} index
    * @return {null}
    */
   function addTitle(index) {
     var titleCounter = document.createElement('div');
     titleCounter.classList.add('h5p-iv-open-ended-title-counter');
-    titleCounter.innerHTML = 'Open-ended Question <span>' + (index + 1) + ' ' + scoreDelimiter + ' ' + questionElements.length + '</span>';
+    titleCounter.innerHTML = IVOpenEndedQuestionTitle + ' ' + '<span>' + (index + 1) + ' ' + scoreDelimiter + ' ' + questionElements.length + '</span>';
 
     var titleWrapper = document.getElementById('h5p-iv-open-ended-reporting-title-wrapper-' + index);
     titleWrapper.prepend(titleCounter);
@@ -64,7 +66,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   /**
    * Create submit button wrapper
-   * @param {int} index
+   * @param {number} index
+   * @return {HTMLElement}
    */
   function createSubmitButtonWrapper(index) {
     var submitButtonWrapper = document.createElement('div');
@@ -82,7 +85,8 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Create input wrapper
    * @param {HTMLElement} wrapper
-   * @param {int} index
+   * @param {number} index
+   * @return {HTMLElement}
    */
   function createInputDiv(wrapper, index) {
     var inputDiv = document.createElement('div');
@@ -143,6 +147,8 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * rerenders elements with new data
    * @param {HTMLElement} input
+   * @param {number} index
+   * @param {number} totalUngraded
    */
   function renderAfterSubmit(input, index, totalUngraded) {
     hideInputs(index);
@@ -156,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * hide inputs
    *
-   * @param  {int} index
+   * @param {number} index
    */
   function hideInputs(index) {
     questions[index].submitButton.classList.add('h5p-iv-open-ended-reporting-hidden');
@@ -167,8 +173,8 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Updates the gradebook scores for a particular question
    *
-   * @param  {int} index
-   * @param  {int} inputValue
+   * @param {number} index
+   * @param {number} inputValue
    * @param  {float} scaleFactor
    */
   function updateGradeBookContainer(index, inputValue, scaleFactor) {
@@ -218,8 +224,8 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Renders the input div
    *
-   * @param  {int} subcontentID
-   * @param  {int} index
+   * @param {number} subcontentID
+   * @param {number} index
    */
   function populateInputDiv(subcontentID, index) {
     H5P.jQuery.get(data_for_page.getSubContentEndpoint, {subcontent_id : subcontentID}, function(response) {
@@ -244,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Updates the remanining question counter
    *
-   * @param  {int} totalUngraded
+   * @param {number} totalUngraded
    */
   function updateQuestionCounter(totalUngraded) {
     if (totalUngraded > 0) {

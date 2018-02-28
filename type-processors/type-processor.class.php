@@ -21,7 +21,7 @@ abstract class TypeProcessor {
    *
    * @return string HTML as string
    */
-  public function generateReport($xapiData, $disableScoring = false) {
+  public function generateReport($xapiData, $disableScoring = false, $allowStyles = false) {
     $this->xapiData       = $xapiData;
     $this->disableScoring = $disableScoring;
 
@@ -41,7 +41,14 @@ abstract class TypeProcessor {
       $this->getResponse($xapiData),
       $extras,
       $scoreSettings
-    ));
+    ), array(
+        'a', 'b', 'button', 'br', 'code', 'col', 'colgroup', 'dd', 'div', 'dl',
+        'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3',
+        'h4', 'h5', 'h6', 'header', 'hgroup', 'i', 'img', 'ins', 'li',
+        'menu', 'meter', 'nav', 'ol', 'p', 's', 'section', 'span', 'strong',
+        'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
+        'thead', 'time', 'tr', 'tt', 'u', 'ul')
+    , $allowStyles);
   }
 
   /**
@@ -109,6 +116,11 @@ abstract class TypeProcessor {
     $scoreSettings->reportingScoreLabel = 'Score';
     if (isset($xapiData->reportingScoreLabel)) {
       $scoreSettings->reportingScoreLabel = $xapiData->reportingScoreLabel;
+    }
+
+    $scoreSettings->IVOpenEndedQuestionTitle = 'Open-ended Question';
+    if (isset($xapiData->IVOpenEndedQuestionTitle)) {
+      $scoreSettings->IVOpenEndedQuestionTitle = $xapiData->IVOpenEndedQuestionTitle;
     }
 
     return $scoreSettings;

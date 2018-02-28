@@ -34,6 +34,7 @@ class IVOpenEndedQuestionProcessor extends TypeProcessor {
       '" data-report-score-delimiter="' . $scoreSettings->scoreDelimiter .
       '" data-report-questions-remaining-label="' . $scoreSettings->questionsRemainingLabel .
       '" data-report-submit-button-label="' . $scoreSettings->submitButtonLabel .
+      '" data-report-iv-open-ended-question-title="' . $scoreSettings->IVOpenEndedQuestionTitle .
       '">' .
         '<div class="h5p-iv-open-ended-reporting-header" id="h5p-iv-open-ended-reporting-header-' . $this->counter .  '">'.
           '<div class="h5p-iv-open-ended-reporting-title-wrapper" id="h5p-iv-open-ended-reporting-title-wrapper-' . $this->counter .  '">'.
