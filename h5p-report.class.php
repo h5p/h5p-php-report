@@ -22,7 +22,7 @@ class H5PReport {
     'H5P.GoalsPage' => 'GoalsPageProcessor',
     'H5P.GoalsAssessmentPage' => 'GoalsAssessmentPageProcessor',
     'H5P.StandardPage' => 'StandardPageProcessor',
-    'H5P.IVOpenEndedQuestion' => 'IVOpenEndedQuestionProcessor',
+    'H5P.FreeTextQuestion' => 'IVOpenEndedQuestionProcessor',
   );
 
   private $processors = array();
@@ -87,7 +87,7 @@ class H5PReport {
        }
      }
 
-     if ($interactionType == 'H5P.IVOpenEndedQuestion') {
+     if ($interactionType == 'H5P.FreeTextQuestion') {
        array_push($results, $childData);
      }
     }
@@ -143,7 +143,7 @@ class H5PReport {
     return array_filter($xapiData, function ($data) {
       $contentTypeProcessor = H5PReport::getContentTypeProcessor($data);
       $interactionType = $contentTypeProcessor;
-      return $interactionType !== 'H5P.IVOpenEndedQuestion';
+      return $interactionType !== 'H5P.FreeTextQuestion';
     });
   }
 
