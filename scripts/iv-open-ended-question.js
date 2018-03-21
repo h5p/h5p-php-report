@@ -117,6 +117,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Populate the inputs with existing questionElements
     populateInputDiv(input.subcontentID, index);
 
+    input.addEventListener('focus', function() {
+      var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
+      submitButton.disabled = false;
+    });
+
     // Validate on blur
     input.addEventListener('blur', function() {
       if (this.value == '' || this.value < 0) {
@@ -126,9 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
       if (this.value > maxScores[index]) {
         this.value = maxScores[index];
       }
-
-      var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
-      submitButton.disabled = false;
     });
 
     // Add logic for the corresponding submit button
