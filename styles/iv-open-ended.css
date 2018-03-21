@@ -1,5 +1,5 @@
 .h5p-iv-open-ended-grading-container {
-  border: solid 2px #c3c3c3;
+  border: solid 1px #c3c3c3;
   box-shadow: 0px 0px 20px rgba(117,117,117,0.2);
   background: #fafbfc;
 }
@@ -15,12 +15,15 @@
 }
 
 .h5p-iv-open-ended-response-container {
-  border: solid 2px #C3C3C3;
   padding: 2em;
   height: 300px;
   overflow-y: auto;
-  line-height: 1;
+  border: solid 1px #C3C3C3;
+  background-color: white;
+  line-height: normal;
+  font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
 }
+
 
 .h5p-iv-open-ended-response-container::-webkit-scrollbar-track
 {
@@ -69,9 +72,7 @@
 }
 
 .h5p-iv-open-ended-reporting-submit-button {
-  height: 60%;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding: 0.2em 1em 0.2em 1em;
   border-radius: 4px;
   background-color: #576cf7;
   font-family: Arial;
