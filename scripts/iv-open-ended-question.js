@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     } else {
       container.querySelectorAll('.h5p-iv-open-ended-reporting-question-counter').forEach(function(questionCounter) {
-        questionCounter.innerHTML = '<span>All questions have been answered</span>';
+        questionCounter.innerHTML = '<span>All questions have been graded</span>';
         questionCounter.classList.add('reporting-completed');
       });
     }
