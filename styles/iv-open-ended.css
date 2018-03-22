@@ -81,6 +81,7 @@
   font-weight: 400;
   text-decoration: none solid rgb(255, 255, 255);
   text-align: center;
+  border: 0;
 }
 
 .h5p-iv-open-ended-reporting-submit-button:disabled {
