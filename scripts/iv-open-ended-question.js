@@ -243,6 +243,11 @@ document.addEventListener("DOMContentLoaded", function() {
         var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
         submitButton.disabled = true;
       }
+      else {
+        // Hide input div and show grade container if it already has been graded
+        hideInputs(index);
+        updateGradeBookContainer(index, loadedInput.value, loadedInput.scaleFactor);
+      }
 
       updateQuestionCounter(response.data.totalUngraded);
     });
