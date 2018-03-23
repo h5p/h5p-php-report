@@ -136,6 +136,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add logic for the corresponding submit button
     var submitButton = document.getElementById('h5p-iv-open-ended-reporting-submit-button-' + index);
     submitButton.addEventListener('click', function() {
+
+      // Validate on submit again since blur doesn't always work
+      if (input.value == '' || input.value < 0) {
+        input.value = 0;
+      }
+
+      if (input.value > maxScores[index]) {
+        input.value = maxScores[index];
+      }
+      
       H5P.jQuery.post(data_for_page.setSubContentEndpoint, {
         subcontent_id: input.subcontentID,
         score: input.value,
