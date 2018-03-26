@@ -51,6 +51,7 @@ class HtmlReportPurifier {
       $stylePatterns[] = '/^(height:\:?[0-9]{1,8}px; width:\:?[0-9]{1,8}px|width\:?[0-9]{1,8}px|height:500px)?$/i';
       $stylePatterns[] = '/^width\:?[0-9]{1,8}%?$/i';
       $stylePatterns[] = '/^height\:?[0-9]{1,8}%?$/i';
+      $stylePatterns[] = '/^font-size:\:?[0-9]{1,8}px$/i';
     }
 
     if (strlen($string) == 0) {
