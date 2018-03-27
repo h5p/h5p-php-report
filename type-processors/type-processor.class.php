@@ -118,7 +118,7 @@ abstract class TypeProcessor {
       $scoreSettings->reportingScoreLabel = $xapiData->reportingScoreLabel;
     }
 
-    $scoreSettings->IVOpenEndedQuestionTitle = 'Open-ended Question';
+    $scoreSettings->IVOpenEndedQuestionTitle = 'Free Text Question';
     if (isset($xapiData->IVOpenEndedQuestionTitle)) {
       $scoreSettings->IVOpenEndedQuestionTitle = $xapiData->IVOpenEndedQuestionTitle;
     }
