@@ -14,6 +14,10 @@
   padding: 0.5em;
 }
 
+.h5p-iv-open-ended-reporting-grade-input-wrapper {
+  display: flex;
+}
+
 .h5p-iv-open-ended-response-container {
   padding: 2em;
   height: 300px;
@@ -23,7 +27,6 @@
   line-height: normal;
   font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
 }
-
 
 .h5p-iv-open-ended-response-container::-webkit-scrollbar-track
 {
@@ -186,4 +189,36 @@
   font-size: 16px;
   text-decoration: underline;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  .h5p-iv-open-ended-reporting-header {
+    padding: 0.5em;
+    display: block;
+  }
+
+  .h5p-iv-open-ended-reporting-grade-input-wrapper {
+    justify-content: flex-end;
+    min-width: 20em;
+  }
+
+  .h5p-iv-open-ended-reporting-change-grade {
+    margin-left: 0;
+  }
+
+  .h5p-iv-open-ended-reporting-scores {
+    justify-content: flex-end;
+  }
+
+  .h5p-iv-open-ended-input-div {
+   display: inline-block;
+  }
+
+  .h5p-iv-open-ended-reporting-submit-button-wrapper {
+    display: inline-block;
+  }
+
+  .h5p-reporting-description {
+    margin-bottom: 0;
+  }
 }

@@ -28,11 +28,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add other elements to the header
     var header = document.getElementById('h5p-iv-open-ended-reporting-header-' + i);
 
+    var gradeInputWrapper = document.createElement('div');
+    gradeInputWrapper.classList.add('h5p-iv-open-ended-reporting-grade-input-wrapper');
+
     var inputDiv = createInputDiv(questionElements[i], i);
-    header.append(inputDiv);
+    gradeInputWrapper.append(inputDiv);
 
     var submitButtonWrapper = createSubmitButtonWrapper(i);
-    header.append(submitButtonWrapper);
+    gradeInputWrapper.append(submitButtonWrapper);
+
+    header.append(gradeInputWrapper);
 
     // Add the header to the question container
     questionElements[i].prepend(header);
@@ -145,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (input.value > maxScores[index]) {
         input.value = maxScores[index];
       }
-      
+
       H5P.jQuery.post(data_for_page.setSubContentEndpoint, {
         subcontent_id: input.subcontentID,
         score: input.value,
