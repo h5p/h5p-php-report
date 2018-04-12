@@ -129,11 +129,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Validate on blur
     input.addEventListener('blur', function() {
-      if (this.value == '' || this.value < 0) {
+      if (this.value == '' || parseInt(this.value) < 0) {
         this.value = 0;
       }
 
-      if (this.value > maxScores[index]) {
+      if (parseInt(this.value) > parseInt(maxScores[index])) {
         this.value = maxScores[index];
       }
     });
