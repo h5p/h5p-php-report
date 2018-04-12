@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     var scaledScoreElement = thisReport.querySelectorAll('.h5p-reporting-main-score-scaled-score')[0];
-    scaledScoreElement.innerHTML = scaledScore;
+    scaledScoreElement.innerHTML = Number((scaledScore).toFixed(2));
   }
 
 
