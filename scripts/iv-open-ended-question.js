@@ -143,12 +143,12 @@ document.addEventListener("DOMContentLoaded", function() {
     submitButton.addEventListener('click', function() {
 
       // Validate on submit again since blur doesn't always work
-      if (input.value == '' || input.value < 0) {
-        input.value = 0;
+      if (this.value == '' || parseInt(this.value) < 0) {
+        this.value = 0;
       }
 
-      if (input.value > maxScores[index]) {
-        input.value = maxScores[index];
+      if (parseInt(this.value) > parseInt(maxScores[index])) {
+        this.value = maxScores[index];
       }
 
       H5P.jQuery.post(data_for_page.setSubContentEndpoint, {
