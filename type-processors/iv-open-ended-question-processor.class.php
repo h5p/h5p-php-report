@@ -23,6 +23,8 @@ class IVOpenEndedQuestionProcessor extends TypeProcessor {
 
     // We need some style for our report
     $this->setStyle('styles/iv-open-ended.css');
+    $this->setScript('scripts/iv-open-ended-question.js');
+
     // Send the subcontent id amongst other data to the view
     $container =
       '<div class="h5p-iv-open-ended-reporting-container ' . // Send subcontent id and score scale factor to the front end

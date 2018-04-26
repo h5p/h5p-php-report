@@ -175,9 +175,16 @@ class H5PReport {
    * @return array
    */
   public function getScriptsUsed() {
-    $scripts = array(
-      'scripts/iv-open-ended-question.js'
-    );
+    $scripts = [];
+
+    // Fetch scripts used by each report processor
+    foreach ($this->processors as $processor) {
+      $script = $processor->getScript();
+      if (!empty($script)) {
+        $scripts[] = $script;
+      }
+    }
+
     return $scripts;
   }
 

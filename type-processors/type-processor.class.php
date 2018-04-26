@@ -9,6 +9,8 @@ abstract class TypeProcessor {
 
   private $style;
 
+  private $script;
+
   protected $xapiData;
 
   protected $disableScoring;
@@ -258,5 +260,23 @@ abstract class TypeProcessor {
    */
   public function getStyle() {
     return $this->style;
+  }
+
+  /**
+   * Set script used by the processor.
+   *
+   * @param string $script Path to script
+   */
+  protected function setScript($script) {
+    $this->script = $script;
+  }
+
+  /**
+   * Get script used by processor.
+   *
+   * @return string|null Path to script
+   */
+  public function getScript() {
+    return $this->script;
   }
 }
