@@ -82,7 +82,7 @@ class BranchingChoiceProcessor extends TypeProcessor {
     foreach ($choices as $choice) {
       $chosen = 'h5p-choices-user';
       if ($choice->id == $response) {
-        $chosen = 'h5p-choices-answered h5p-choices-user-correct'
+        $chosen = 'h5p-choices-answered h5p-choices-user-correct';
       }
 
       $row =
