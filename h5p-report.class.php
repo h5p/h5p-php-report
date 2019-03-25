@@ -13,6 +13,7 @@ class H5PReport {
     'matching' => 'MatchingProcessor',
     'choice' => 'ChoiceProcessor',
     'long-choice' => 'LongChoiceProcessor',
+    'branching-choice' => 'BranchingChoiceProcessor',
   );
 
   private static $contentTypeExtension = 'https://h5p.org/x-api/h5p-machine-name';
