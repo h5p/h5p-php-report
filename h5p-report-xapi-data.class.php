@@ -204,8 +204,11 @@ class H5PReportXAPIData {
 
     switch ($this->getInteractionType()) {
       case 'choice':
+        $additionals['choices'] = $this->getObjectDefinition('choices', array());
+        $additionals['extensions'] = $this->getObjectDefinition('extensions', (object)array());
+        break;
+
       case 'long-choice':
-      case 'branching-choice':
         $additionals['choices'] = $this->getObjectDefinition('choices', array());
         $additionals['extensions'] = $this->getObjectDefinition('extensions', (object)array());
         break;

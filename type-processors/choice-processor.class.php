@@ -20,13 +20,6 @@ class ChoiceProcessor extends TypeProcessor {
         $this->disableScoring
       );
     }
-    if ($this->isBranchingChoice($extras)) {
-      return H5PReport::getInstance()->generateReport(
-        $this->xapiData,
-        'branching-choice',
-        $this->disableScoring
-      );
-    }
 
     // We need some style for our report
     $this->setStyle('styles/choice.css');
@@ -139,19 +132,5 @@ class ChoiceProcessor extends TypeProcessor {
 
     // Determine if line-breaks extension exists
     return isset($extensions->{'https://h5p.org/x-api/line-breaks'});
-  }
-
-  /**
-   * Determine if choice is a branching choice interaction type
-   *
-   * @param $extras
-   *
-   * @return bool
-   */
-  private function isBranchingChoice($extras) {
-    $extensions = isset($extras->extensions) ? $extras->extensions : (object) array();
-
-    // Determine if line-breaks extension exists
-    return isset($extensions->{'https://h5p.org/x-api/no-correct-answer'});
   }
 }
