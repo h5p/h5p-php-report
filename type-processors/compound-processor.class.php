@@ -19,7 +19,7 @@ class CompoundProcessor extends TypeProcessor {
     $H5PReport = H5PReport::getInstance();
     $reports = '';
 
-    if (isset($extras->children)) {
+    if (!empty($extras->children)) {
 
       // Generate a grading container if gradable content types exist
       $reports .= $H5PReport->generateGradableReports($extras->children);
@@ -28,10 +28,13 @@ class CompoundProcessor extends TypeProcessor {
       $extras->children = $H5PReport->stripGradableChildren($extras->children);
 
       foreach ($extras->children as $childData) {
-        $reports .=
-          '<div class="h5p-result">' .
-            $H5PReport->generateReport($childData, null, $this->disableScoring) .
-          '</div>';
+        $rep = $H5PReport->generateReport($childData, null, $this->disableScoring);
+        if ($rep) {
+          $reports .=
+            '<div class="h5p-result">' .
+            $rep .
+            '</div>';
+        }
       }
     }
 
@@ -44,8 +47,13 @@ class CompoundProcessor extends TypeProcessor {
           $reports;
     }
 
-    return '<div class="h5p-reporting-container h5p-compound-container">' .
-             $reports .
-           '</div>';
+    if (empty($reports)) {
+      return '';
+    }
+    else {
+      return '<div class="h5p-reporting-container h5p-compound-container">' .
+               $reports .
+             '</div>';
+    }
   }
 }
