@@ -60,6 +60,10 @@
   border-radius: 5px;
 }
 
+.h5p-choices-user.h5p-choices-answered.h5p-choices-user-correct.h5p-choices-no-correct {
+  background-color: #186df7;
+}
+
 .h5p-choices-user.h5p-choices-answered.h5p-choices-user-correct:before {
   font-family: 'h5p-reporting-icons';
   content: "\e90c";
