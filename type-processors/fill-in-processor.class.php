@@ -53,7 +53,9 @@ class FillInProcessor extends TypeProcessor {
       '<div class="h5p-reporting-container h5p-fill-in-container">' .
         $header . $report .
       '</div>';
-    $footer = $this->generateFooter();
+
+    // Footer only required if there is a correct responses pattern
+    $footer = (sizeof($crp) !== 0) ? $this->generateFooter() : '';
 
 
     return $container . $footer;
@@ -200,6 +202,11 @@ class FillInProcessor extends TypeProcessor {
    */
   private function getPlaceholderReplacements($crp, $response, $caseSensitive) {
     $placeholderReplacements = array();
+
+    // Return response without markup if answers are neither right nor wrong
+    if (sizeof($crp) === 0) {
+      $placeholderReplacements[] = $response[0];
+    }
 
     foreach ($crp as $index => $value) {
 
