@@ -39,6 +39,7 @@ class FillInProcessor extends TypeProcessor {
 
     // Process correct responses and user responses patterns
     $processedCRPs     = $this->processCRPs($crp, $caseMatters['nextIndex']);
+
     $processedResponse = $this->processResponse($response);
 
     // Build report from description, correct responses and user responses
@@ -56,7 +57,6 @@ class FillInProcessor extends TypeProcessor {
 
     // Footer only required if there is a correct responses pattern
     $footer = (sizeof($crp) !== 0) ? $this->generateFooter() : '';
-
 
     return $container . $footer;
   }
@@ -205,7 +205,12 @@ class FillInProcessor extends TypeProcessor {
 
     // Return response without markup if answers are neither right nor wrong
     if (sizeof($crp) === 0) {
-      $placeholderReplacements[] = $response[0];
+      foreach($response as $answer) {
+        $placeholderReplacements[] =
+          '<span class="h5p-fill-in-user-response h5p-fill-in-user-response-correct h5p-fill-in-no-correct">' .
+          $answer .
+          '</span>';
+      }
     }
 
     foreach ($crp as $index => $value) {

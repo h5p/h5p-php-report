@@ -38,6 +38,10 @@
   border: dashed 1px #8AC062;
 }
 
+.h5p-fill-in-user-response-correct.h5p-fill-in-no-correct {
+  background-color: #186df7;
+}
+
 .h5p-fill-in-user-response-correct:before {
   font-family: 'h5p-reporting-icons';
   content: "\e90c";
