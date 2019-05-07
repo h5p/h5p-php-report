@@ -56,7 +56,7 @@ class FillInProcessor extends TypeProcessor {
       '</div>';
 
     // Footer only required if there is a correct responses pattern
-    $footer = (sizeof($crp) !== 0) ? $this->generateFooter() : '';
+    $footer = (isset($crp)) ? $this->generateFooter() : '';
 
     return $container . $footer;
   }
@@ -108,6 +108,10 @@ class FillInProcessor extends TypeProcessor {
 
     // CRPs sorted by placeholder order
     $sortedCRP = array();
+
+    if (!is_array($crp)) {
+      return $sortedCRP;
+    }
 
     foreach ($crp as $crpString) {
 
