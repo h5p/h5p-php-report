@@ -93,7 +93,7 @@ class ChoiceProcessor extends TypeProcessor {
     $rows = '';
     foreach($choices as $choice) {
       $choiceID = $choice->id;
-      $isCRP = in_array($choiceID, $correctAnswers);
+      $isCRP = !$hasNoRightOrWrong && in_array($choiceID, $correctAnswers);
       $isAnswered = in_array($choiceID, $responses);
 
       $userClasses = 'h5p-choices-user';
