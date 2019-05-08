@@ -45,7 +45,8 @@ class FillInProcessor extends TypeProcessor {
     $report = $this->buildReportOutput($description,
       $processedCRPs,
       $processedResponse,
-      $caseMatters['caseSensitive']
+      $caseMatters['caseSensitive'],
+      property_exists($extras, 'longfillin')
     );
 
     $header = $this->generateHeader($scoreSettings);
@@ -172,18 +173,21 @@ class FillInProcessor extends TypeProcessor {
    * @param array $crp
    * @param array $response
    * @param boolean $caseSensitive
+   * @param boolean $longFillIn True, if long-fill-in interaction
    *
    * @return string HTML
    */
   private function buildReportOutput(
     $description, $crp,
-    $response, $caseSensitive
+    $response, $caseSensitive,
+    $longFillIn
   ) {
 
     // Get placeholder replacements and replace them
     $placeholderReplacements = $this->getPlaceholderReplacements($crp,
       $response,
-      $caseSensitive
+      $caseSensitive,
+      $longFillIn
     );
     return $this->replacePlaceholders($description, $placeholderReplacements);
   }
@@ -195,11 +199,13 @@ class FillInProcessor extends TypeProcessor {
    * @param array $crp Correct responses patterns
    * @param array $response User responses
    * @param boolean $caseSensitive Case sensitivity of interaction
+   * @param boolean $longFillIn True, if long-fill-in interaction
    *
    * @return array Placeholder replacements
    */
   private function getPlaceholderReplacements($crp, $response, $caseSensitive) {
     $placeholderReplacements = array();
+    $classLongFillIn = ($longFillIn) ? ' h5p-long-fill-in' : '';
 
     foreach ($crp as $index => $value) {
 
@@ -211,8 +217,8 @@ class FillInProcessor extends TypeProcessor {
         $caseSensitive
       );
       $responseClass = $isCorrect ?
-        'h5p-fill-in-user-response-correct' :
-        'h5p-fill-in-user-response-wrong';
+        'h5p-fill-in-user-response-correct' . $classLongFillIn :
+        'h5p-fill-in-user-response-wrong' . $classLongFillIn;
 
       // Format the placeholder replacements
       $userResponse =
@@ -225,7 +231,7 @@ class FillInProcessor extends TypeProcessor {
       $correctResponsePattern = '';
       if (strlen($CRPhtml) > 0) {
         $correctResponsePattern .=
-          '<span class="h5p-fill-in-correct-responses-pattern">' .
+          '<span class="h5p-fill-in-correct-responses-pattern' . $classLongFillIn . '">' .
             $CRPhtml .
           '</span>';
       }
