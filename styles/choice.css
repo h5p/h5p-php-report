@@ -62,6 +62,7 @@
 
 .h5p-choices-user.h5p-choices-answered.h5p-choices-user-correct.h5p-choices-no-correct {
   background-color: #186df7;
+  border: none;
 }
 
 .h5p-choices-user.h5p-choices-answered.h5p-choices-user-correct:before {
