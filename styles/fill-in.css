@@ -40,6 +40,7 @@
 
 .h5p-fill-in-user-response-correct.h5p-fill-in-no-correct {
   background-color: #186df7;
+  border: none;
 }
 
 .h5p-fill-in-user-response-correct:before {
