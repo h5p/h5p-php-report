@@ -203,7 +203,7 @@ class FillInProcessor extends TypeProcessor {
    *
    * @return array Placeholder replacements
    */
-  private function getPlaceholderReplacements($crp, $response, $caseSensitive) {
+  private function getPlaceholderReplacements($crp, $response, $caseSensitive, $longFillIn) {
     $placeholderReplacements = array();
     $classLongFillIn = ($longFillIn) ? ' h5p-long-fill-in' : '';
 
