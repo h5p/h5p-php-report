@@ -24,6 +24,9 @@ class FillInProcessor extends TypeProcessor {
    */
   const CRP_REPORT_SEPARATOR = ' / ';
 
+  private static $contentTypeAlternatives = 'https://h5p.org/x-api/alternatives';
+  private static $contentTypeCaseSensitivity = 'https://h5p.org/x-api/case-sensitivity';
+
   /**
    * Determines options for interaction and generates a human readable HTML
    * report.
@@ -34,13 +37,20 @@ class FillInProcessor extends TypeProcessor {
     // We need some style for our report
     $this->setStyle('styles/fill-in.css');
 
-    // Generate interaction options
-    $caseMatters = $this->determineCaseMatters(empty($crp[0]) ?  '' : $crp[0]);
+    if (isset($extras->extensions->{self::$contentTypeCaseSensitivity}) && 
+        isset($extras->extensions->{self::$contentTypeAlternatives})) {
+      $caseMatters    = array('caseSensitive' => $extras->extensions->{self::$contentTypeCaseSensitivity});
+      $processedCRPs  = $extras->extensions->{self::$contentTypeAlternatives};
+    } else {
+      // Generate interaction options
+      $caseMatters      = $this->determineCaseMatters(empty($crp[0]) ?  '' : $crp[0]);
+      
+      // Process correct responses
+      $processedCRPs    = $this->processCRPs($crp, $caseMatters['nextIndex']);
+    }
 
-    // Process correct responses and user responses patterns
-    $processedCRPs     = $this->processCRPs($crp, $caseMatters['nextIndex']);
-
-    $processedResponse = $this->processResponse($response);
+    // Process user responses patterns
+    $processedResponse  = $this->processResponse($response);
 
     // Build report from description, correct responses and user responses
     $report = $this->buildReportOutput($description,
