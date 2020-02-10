@@ -67,3 +67,10 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Customization for long-fill-in interactions */
+.h5p-fill-in-container.h5p-long-fill-in .h5p-fill-in-correct-responses-pattern,
+.h5p-fill-in-container.h5p-long-fill-in .h5p-fill-in-user-response-wrong,
+.h5p-fill-in-container.h5p-long-fill-in .h5p-fill-in-user-response-correct {
+  width: 100%;
+}

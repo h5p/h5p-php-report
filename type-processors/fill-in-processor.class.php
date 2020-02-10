@@ -50,8 +50,9 @@ class FillInProcessor extends TypeProcessor {
     );
 
     $header = $this->generateHeader($scoreSettings);
+    $longFillIn = property_exists($extras, 'longfillin') ? ' h5p-long-fill-in' : '';
     $container =
-      '<div class="h5p-reporting-container h5p-fill-in-container">' .
+      '<div class="h5p-reporting-container h5p-fill-in-container' . $longFillIn . '">' .
         $header . $report .
       '</div>';
 
