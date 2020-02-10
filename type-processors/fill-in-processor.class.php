@@ -213,7 +213,7 @@ class FillInProcessor extends TypeProcessor {
       foreach($response as $answer) {
         $placeholderReplacements[] =
           '<span class="h5p-fill-in-user-response h5p-fill-in-user-response-correct h5p-fill-in-no-correct">' .
-          $answer .
+          nl2br($answer) .
           '</span>';
       }
     }
