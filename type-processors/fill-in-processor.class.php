@@ -35,7 +35,7 @@ class FillInProcessor extends TypeProcessor {
     $this->setStyle('styles/fill-in.css');
 
     // Generate interaction options
-    $caseMatters = $this->determineCaseMatters($crp[0]);
+    $caseMatters = $this->determineCaseMatters(empty($crp[0]) ?  '' : $crp[0]);
 
     // Process correct responses and user responses patterns
     $processedCRPs     = $this->processCRPs($crp, $caseMatters['nextIndex']);
