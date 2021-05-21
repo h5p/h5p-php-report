@@ -24,8 +24,15 @@ class FillInProcessor extends TypeProcessor {
    */
   const CRP_REPORT_SEPARATOR = ' / ';
 
-  private static $contentTypeAlternatives = 'https://h5p.org/x-api/alternatives';
-  private static $contentTypeCaseSensitivity = 'https://h5p.org/x-api/case-sensitivity';
+  /**
+   * Support for the Alternatives extension in the x-api event.
+   */
+  const CONTENT_TYPE_ALTERNATIVES = 'https://h5p.org/x-api/alternatives';
+
+  /**
+   * Support the Case Sensitivity extension in the x-api event.
+   */
+  const CONTENT_TYPE_CASE_SENSITIVITY = 'https://h5p.org/x-api/case-sensitivity';
 
   /**
    * Determines options for interaction and generates a human readable HTML
@@ -37,10 +44,10 @@ class FillInProcessor extends TypeProcessor {
     // We need some style for our report
     $this->setStyle('styles/fill-in.css');
 
-    if (isset($extras->extensions->{self::$contentTypeCaseSensitivity}) && 
-        isset($extras->extensions->{self::$contentTypeAlternatives})) {
-      $caseMatters    = array('caseSensitive' => $extras->extensions->{self::$contentTypeCaseSensitivity});
-      $processedCRPs  = $extras->extensions->{self::$contentTypeAlternatives};
+    if (isset($extras->extensions->{self::CONTENT_TYPE_CASE_SENSITIVITY}) &&
+        isset($extras->extensions->{self::CONTENT_TYPE_ALTERNATIVES})) {
+      $caseMatters    = array('caseSensitive' => $extras->extensions->{self::CONTENT_TYPE_CASE_SENSITIVITY});
+      $processedCRPs  = $extras->extensions->{self::CONTENT_TYPE_ALTERNATIVES};
     } else {
       // Generate interaction options
       $caseMatters      = $this->determineCaseMatters(empty($crp[0]) ?  '' : $crp[0]);
