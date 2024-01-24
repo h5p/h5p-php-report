@@ -46,12 +46,24 @@ class HtmlReportPurifier {
     $stylePatterns = false;
     if ($allowedStyles) {
       $stylePatterns = array();
-      $stylePatterns[] = '/^color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
-      $stylePatterns[] = '/^background-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)) *;?$/i';
+      $stylePatterns[] = '/^color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)|hsla?\([0-9,.% ]+\)) *;?$/i';
+      $stylePatterns[] = '/^background-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)|hsla?\([0-9,.% ]+\)) *;?$/i';
       $stylePatterns[] = '/^(height:\:?[0-9]{1,8}px; width:\:?[0-9]{1,8}px|width\:?[0-9]{1,8}px|height:500px)?$/i';
       $stylePatterns[] = '/^width\:?[0-9]{1,8}%?$/i';
       $stylePatterns[] = '/^height\:?[0-9]{1,8}%?$/i';
       $stylePatterns[] = '/^font-size:\:?[0-9]{1,8}px$/i';
+
+      // Table styles (CKEditor outputs border as width style color)
+      $stylePatterns[] = '/^border: *[0-9.]+(em|px|%|) *(none|solid|dotted|dashed|double|groove|ridge|inset|outset) *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)|hsla?\([0-9,.% ]+\)) *;?$/i';
+      $stylePatterns[] = '/^border-style: *(none|solid|dotted|dashed|double|groove|ridge|inset|outset) *;?$/i';
+      $stylePatterns[] = '/^border-width: *[0-9.]+(em|px|%|) *;?$/i';
+      $stylePatterns[] = '/^border-color: *(#[a-f0-9]{3}[a-f0-9]{3}?|rgba?\([0-9, ]+\)|hsla?\([0-9,.% ]+\)) *;?$/i';
+
+      $stylePatterns[] = '/^vertical-align: *(middle|top|bottom);?$/i';
+      $stylePatterns[] = '/^padding: *[0-9.]+(em|px|%|) *;?$/i';
+      $stylePatterns[] = '/^width: *[0-9.]+(em|px|%|) *;?$/i';
+      $stylePatterns[] = '/^height: *[0-9.]+(em|px|%|) *;?$/i';
+      $stylePatterns[] = '/^float: *(right|left|none) *;?$/i';
     }
 
     if (strlen($string) == 0) {
@@ -226,14 +238,17 @@ class HtmlReportPurifier {
           // Attribute value, a URL after href= for instance.
           if (preg_match('/^"([^"]*)"(\s+|$)/', $attr, $match)) {
             if ($allowedStyles && $attrName === 'style') {
+              $style = 'style="';
               // Allow certain styles
               foreach ($allowedStyles as $pattern) {
-                if (preg_match($pattern, $match[1])) {
-                  // All patterns are start to end patterns, and CKEditor adds one span per style
-                  $attrArr[] = 'style="' . $match[1] . '"';
-                  break;
+                foreach (explode(';', $match[1]) as $styleAttr) {
+                  if (preg_match($pattern, $styleAttr, $styleMatches)) {
+                    // All patterns are start to end patterns
+                    $style = $style . $styleMatches[0] . ';';
+                  }
                 }
               }
+              $attrArr[] = $style . '"';
               break;
             }
 
