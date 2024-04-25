@@ -50,7 +50,7 @@ abstract class TypeProcessor {
       'menu', 'meter', 'nav', 'ol', 'p', 'pre', 's', 'section', 'span',
       'strong', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot',
       'th', 'thead', 'time', 'tr', 'tt', 'u', 'ul')
-  , $allowStyles);
+    , $allowStyles);
   }
 
   /**
