@@ -57,3 +57,32 @@
 .h5p-reporting-scaled-score {
   margin-left: 0.4em;
 }
+
+.h5p-report-view code {
+  color: #3d3d3d;
+  background: #e0e0e0;
+  border-radius: 2px;
+  padding: 0 5px;
+}
+
+.h5p-report-view pre {
+  background-color: unset;
+  border: unset;
+  color: unset;
+  font-size: 1.8rem;
+  margin: unset;
+  padding: unset;
+  font-weight: 400;
+}
+
+.h5p-report-view pre > code {
+  background-color: #fafafa;
+  padding: 5px;
+  display: block;
+  line-height: normal;
+  border: 1px solid #c7c7c7;
+  border-left-width: 4px;
+  max-width: 100%;
+  white-space: pre;
+  overflow: auto;
+}
