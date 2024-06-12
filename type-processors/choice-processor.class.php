@@ -24,7 +24,8 @@ class ChoiceProcessor extends TypeProcessor {
     // We need some style for our report
     $this->setStyle('styles/choice.css');
 
-    $correctAnswers = explode('[,]', $crp[0]);
+    // choice type exercises lack correct reponses pattern if there's no right/wrong answer
+    $correctAnswers = (isset($crp)) ? explode('[,]', $crp[0]) : NULL;
     $responses = explode('[,]', $response);
 
     $headerHtml = $this->generateHeader($description, $scoreSettings);
@@ -77,25 +78,31 @@ class ChoiceProcessor extends TypeProcessor {
    * @return string Table element
    */
   private function generateTable($extras, $correctAnswers, $responses) {
+    $hasNoRightOrWrong = !isset($correctAnswers);
 
     $choices = $extras->choices;
     $tableHeader =
       '<tr class="h5p-choices-table-heading">' .
-        '<td class="h5p-choices-choice">Answers</td>' .
+        '<td class="h5p-choices-choice">Answers</td>';
+    $tableHeader .= ($hasNoRightOrWrong) ?
+        '<td class="h5p-choices-user-answer">Chosen</td>' :
         '<td class="h5p-choices-user-answer">Your Answer</td>' .
-        '<td class="h5p-choices-crp-answer">Correct</td>' .
-      '</tr>';
+        '<td class="h5p-choices-crp-answer">Correct</td>';
+    $tableHeader .= '</tr>';
 
     $rows = '';
     foreach($choices as $choice) {
       $choiceID = $choice->id;
-      $isCRP = in_array($choiceID, $correctAnswers);
+      $isCRP = !$hasNoRightOrWrong && in_array($choiceID, $correctAnswers);
       $isAnswered = in_array($choiceID, $responses);
 
       $userClasses = 'h5p-choices-user';
       $crpClasses = 'h5p-choices-crp';
       if ($isAnswered) {
         $userClasses .= ' h5p-choices-answered';
+      }
+      if ($hasNoRightOrWrong) {
+        $userClasses .= ' h5p-choices-user-correct h5p-choices-no-correct';
       }
       if ($isCRP) {
         $userClasses .= ' h5p-choices-user-correct';
@@ -108,10 +115,13 @@ class ChoiceProcessor extends TypeProcessor {
         '</td>' .
         '<td class="h5p-choices-icon-cell">' .
           '<span class="' . $userClasses . '"></span>' .
-        '</td>' .
-        '<td class="h5p-choices-icon-cell">' .
-          '<span class="' . $crpClasses . '"></span>' .
         '</td>';
+      if (!$hasNoRightOrWrong) {
+        $row .=
+          '<td class="h5p-choices-icon-cell">' .
+            '<span class="' . $crpClasses . '"></span>' .
+          '</td>';
+      }
 
       $rows .= '<tr>' . $row . '</tr>';
     }
